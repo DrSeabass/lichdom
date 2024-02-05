@@ -1,6 +1,7 @@
 # TODO: Lift Card Definitions Out Into Separate File(s)
 from enum import Enum
-
+from copy import deepcopy
+import unittest
 
 class Theme(Enum):
     MUNDANE = 0
@@ -181,3 +182,43 @@ class Card:
 
     def __str__(self):
         return "{} {}, {} {}".format(self.value, self.suit, self.theme, self.cardType)
+
+    def copy(self):
+        return deepcopy(self)
+
+    def __eq__(self, card2):
+        return (
+                type(self) == type(card2)
+                and self.suit == card2.suit
+                and self.value == card2.value
+        )
+
+class TestEq(unittest.TestCase):
+    def test_not_same_memory(self):
+        card1 = Card(Suit.SPADES, FaceValue.ACE)
+        card2 = Card(Suit.SPADES, FaceValue.ACE)
+        self.assertTrue(card1 == card2)
+        self.assertFalse(id(card1) == id(card2))
+
+    def test_same_memory(self):
+        card1 = Card(Suit.SPADES, FaceValue.ACE)
+        self.assertTrue(card1 == card1)
+        self.assertTrue(id(card1) == id(card1))
+
+    def test_not_same(self):
+        card1 = Card(Suit.SPADES, FaceValue.ACE)
+        card2 = Card(Suit.CLUBS, FaceValue.ACE)
+        self.assertFalse(card1 == card2)
+        self.assertFalse(id(card1) == id(card2))
+class TestCopy(unittest.TestCase):
+
+    def test_copy_is_deep(self):
+        card1 = Card(Suit.SPADES, FaceValue.ACE)
+        card2 = card1.copy()
+        self.assertTrue(card1 == card2)
+        card1.suit = Suit.HEARTS
+        self.assertFalse(card1 == card2)
+
+
+if __name__ == '__main__':
+    unittest.main()
