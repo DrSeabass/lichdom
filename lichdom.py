@@ -14,6 +14,9 @@ class Theme(Enum):
                 return "Mundane"
             case Theme.ARCANE:
                 return "Arcane"
+            case _:
+                raise TypeError("Unexpected value {}".format(self))
+
 
 
 class Suit(Enum):
@@ -33,6 +36,8 @@ class Suit(Enum):
                 return Theme.MUNDANE
             case Suit.DIAMONDS:
                 return Theme.MUNDANE
+            case _:
+                raise TypeError("Unexpected value {}".format(suit))
 
     def get_theme(self):
         return Suit.get_suit_theme(self)
@@ -47,6 +52,8 @@ class Suit(Enum):
                 return "of Hearts"
             case Suit.DIAMONDS:
                 return "of Diamonds"
+            case _:
+                raise TypeError("Unexpected value {}".format(self))
 
 
 class CardType(Enum):
@@ -77,6 +84,8 @@ class CardType(Enum):
                 return "Catastrophe"
             case CardType.TRUTH:
                 return "Truth"
+            case _:
+                raise TypeError("Unexpected value {}".format(self))
 
 
 class FaceValue(Enum):
@@ -123,6 +132,8 @@ class FaceValue(Enum):
                 return CardType.INFLUENCE
             case FaceValue.KING:
                 return CardType.CATASTROPHE
+            case _:
+                raise TypeError("Unexpected value {}".format(fv))
 
     def get_cardtype(self):
         return FaceValue.get_face_cardtype(self)
@@ -155,6 +166,8 @@ class FaceValue(Enum):
                 return "Queen"
             case FaceValue.KING:
                 return "King"
+            case _:
+                raise TypeError("Unexpected value {}".format(self))
 
 
 class Card:
