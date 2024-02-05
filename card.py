@@ -1,6 +1,7 @@
 # TODO: Lift Card Definitions Out Into Separate File(s)
 from enum import Enum
 
+
 class Theme(Enum):
     MUNDANE = 0
     ARCANE = 1
@@ -13,7 +14,6 @@ class Theme(Enum):
                 return "Arcane"
             case _:
                 raise TypeError("Unexpected value {}".format(self))
-
 
 
 class Suit(Enum):
@@ -55,9 +55,9 @@ class Suit(Enum):
 
 class CardType(Enum):
     EVENT = 0
-    SCHEME_SCRY = 1 # TODO: Probably need to break this up
+    SCHEME_SCRY = 1  # TODO: Probably need to break this up
     ADVERSITY = 2
-    PLOTS_CURSES = 3 # TODO: Probably need to break this up
+    PLOTS_CURSES = 3  # TODO: Probably need to break this up
     COMPANION = 4
     INFLUENCE = 5
     CATASTROPHE = 6

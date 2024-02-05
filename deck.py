@@ -1,5 +1,6 @@
 from card import Suit, FaceValue, Card
 
+
 class Deck:
     cards = []
 
