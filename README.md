@@ -4,8 +4,7 @@
 
 ## [License CC-BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)
 
-## Lichdom
-[Available Through DriveThruRPG](https://preview.drivethrurpg.com/en/product/399971/Lichdom--A-solo-RPG-about-the-perilous-journey-of-a-sorcerer-towards-immortality)
+## [Lichdom](https://preview.drivethrurpg.com/en/product/399971/Lichdom--A-solo-RPG-about-the-perilous-journey-of-a-sorcerer-towards-immortality)
 
 * Design & Writing by Adrian Lopez Sanjuan.
 * Editing by Noelia Garcia Novas.
