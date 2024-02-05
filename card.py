@@ -1,7 +1,7 @@
-# TODO: Lift Card Definitions Out Into Separate File(s)
-from enum import Enum
 from copy import deepcopy
+from enum import Enum
 import unittest
+
 
 class Theme(Enum):
     MUNDANE = 0
@@ -193,7 +193,8 @@ class Card:
                 and self.value == card2.value
         )
 
-class TestEq(unittest.TestCase):
+
+class TestCard(unittest.TestCase):
     def test_not_same_memory(self):
         card1 = Card(Suit.SPADES, FaceValue.ACE)
         card2 = Card(Suit.SPADES, FaceValue.ACE)
@@ -210,7 +211,6 @@ class TestEq(unittest.TestCase):
         card2 = Card(Suit.CLUBS, FaceValue.ACE)
         self.assertFalse(card1 == card2)
         self.assertFalse(id(card1) == id(card2))
-class TestCopy(unittest.TestCase):
 
     def test_copy_is_deep(self):
         card1 = Card(Suit.SPADES, FaceValue.ACE)
