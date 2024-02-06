@@ -169,16 +169,12 @@ class FaceValue(Enum):
 
 
 class Card:
-    suit: Suit
-    theme: Theme
-    cardType: CardType
-    value: FaceValue
 
     def __init__(self, suit: Suit, value: FaceValue):
-        self.suit = suit
-        self.value = value
-        self.theme = suit.get_theme()
-        self.cardType = value.get_cardtype()
+        self.suit: Suit = suit
+        self.value: FaceValue = value
+        self.theme: Theme = suit.get_theme()
+        self.cardType: CardType = value.get_cardtype()
 
     def __str__(self):
         return "{} {}, {} {}".format(self.value, self.suit, self.theme, self.cardType)
