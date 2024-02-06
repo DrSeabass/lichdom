@@ -1,3 +1,4 @@
+import random
 from copy import deepcopy
 from enum import Enum
 import unittest
@@ -170,17 +171,17 @@ class FaceValue(Enum):
 
 class Card:
 
-    def __init__(self, suit: Suit, value: FaceValue):
+    def __init__(self, suit: Suit, value: FaceValue, bptext = "", fixed = [], random_sets = []):
         self.suit: Suit = suit
         self.value: FaceValue = value
         self.theme: Theme = suit.get_theme()
         self.cardType: CardType = value.get_cardtype()
         # Always display boilerplate text
-        self.boilerplate_text: str
+        self.boilerplate_text: str = bptext
         # Display each of the fixed writing prompts
-        self.fixed_prompts: list
+        self.fixed_prompts: list = fixed
         # Display one of each of the random prompt sets
-        self.random_prompt_sets: list
+        self.random_prompt_sets: list = random_sets
 
     def __str__(self):
         return "{} {}, {} {}".format(self.value, self.suit, self.theme, self.cardType)
@@ -189,7 +190,15 @@ class Card:
         return deepcopy(self)
 
     def take_actions(self, player, deck):
-        raise "Stub"
+        print(self.boilerplate_text)
+        print()
+        for fp in self.fixed_prompts:
+            print(fp)
+            print()
+        for prompt_set in self.random_prompt_sets:
+            picked = random.choice(prompt_set)
+            print(picked)
+            print()
 
     def __eq__(self, card2):
         return (
