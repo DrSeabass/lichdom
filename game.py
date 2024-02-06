@@ -1,0 +1,202 @@
+import enum
+import random
+
+from card import Card, Theme, CardType
+from deck import Deck
+from player import Player
+
+
+class UserPromptBase(enum):
+    DRAW = 0
+    ATTEMPT_LICHDOM = 1
+    SCHEME_SCRY = 2
+
+
+class UserPrompt:
+
+    def __init__(self, base, card=None):
+        self.base_prompt = base
+        if card is not None:
+            self.card = card
+
+    def __str__(self):
+        match self.base_prompt:
+            case UserPromptBase.DRAW:
+                return "Draw a Card"
+            case UserPromptBase.ATTEMPT_LICHDOM:
+                return "Attempt the Lichdom Ritual"
+            case UserPromptBase.SCHEME_SCRY:
+                return str(self.card)
+
+
+class DrawStepResultBase(enum):
+    MAGICAL_CATACLYSM = 0
+    CARD = 1
+
+
+class DrawStepResult:
+
+    def __init__(self, base, card):
+        self.base = base
+        self.card = card
+
+    def ends_game(self):
+        if self.base == DrawStepResultBase.MAGICAL_CATACLYSM:
+            return True
+        else:
+            return False
+
+
+class Game:
+
+    def __init__(self):
+        self.player: Player = Player()
+        self.deck: Deck = Deck()
+        self.previous_card: Card = None
+        self.continue_game: bool = True
+
+    def get_step_actions(self):
+        # if the player has 2 truths, they may attempt to ascend to lichdom, prompt them
+        # if the player has a scrying / scheming card, they may scry, prompt them
+        # otherwise, force the draw step
+
+        truth_count = 0
+        prompts = [UserPrompt(UserPromptBase.DRAW)]
+        for card in self.player.hand:
+            if card.cardType == CardType.TRUTH:
+                truth_count += 1
+            elif card.cardType == CardType.SCHEME_SCRY:
+                prompts.append(UserPrompt(UserPromptBase.SCHEME_SCRY, card))
+        if truth_count >= 2:
+            prompts.append(UserPrompt(UserPromptBase.ATTEMPT_LICHDOM))
+
+        return prompts
+
+    def prompt_user(self, prompt_actions):
+        for index, action in enumerate(prompt_actions):
+            print("{}: {}".format(index, action))
+        user_input = input("Choose an action (by inputting the number): ")
+        try:
+            selected_index = int(user_input)
+            if 0 <= selected_index < len(prompt_actions):
+                return selected_index
+        except ValueError:
+            print("{} was a bad selection.".format(user_input))
+            return self.prompt_user(prompt_actions)
+
+    def draw(self):
+        if len(self.deck) == 0:
+            raise ValueError("You can't deck yourself in this game; should always have 4 catastrophe cards")
+        next_card = self.deck.draw()
+        print("Drew to {}".format(next_card))
+        if (
+                self.previous_card is not None
+                and self.previous_card.theme == Theme.ARCANE
+                and next_card.theme == Theme.ARCANE
+                and next_card.cardType == CardType.CATASTROPHE
+                and self.previous_card.cardType == CardType.CATASTROPHE
+        ):
+            return DrawStepResult(DrawStepResultBase.MAGICAL_CATACLYSM, next_card)
+        return DrawStepResult(DrawStepResultBase.CARD, next_card)
+
+    def prompt_user_scheme_scry(self, uncertain, certain):
+        print("Replace one of these cards:")
+        for index, card in enumerate(certain):
+            print("{}: {}".format(index, card))
+        print("With one of these cards:")
+        for index, card in enumerate(uncertain):
+            print("{}: {}".format(index, card))
+        user_input = input("Your Selections (in the format number, number)")
+        try:
+            selections = user_input.split(',')
+            removed_index = int(selections[0])
+            replaced_index = int(selections[1])
+            if 0 < removed_index >= len(certain):
+                print("Certain card to remove index is illegal, try again")
+                return self.prompt_user_scheme_scry(uncertain, certain)
+            if 0 < replaced_index >= len(uncertain):
+                print("Uncertain card to select index is illegal, try again")
+                return self.prompt_user_scheme_scry(uncertain, certain)
+            swap = certain[removed_index]
+            certain[removed_index] = uncertain[replaced_index]
+            uncertain[replaced_index] = swap
+            return uncertain, certain
+        except:
+            print("Couldn't understand your selections.  Please try again.")
+            return self.prompt_user_scheme_scry(uncertain, certain)
+
+    def scheme_scry(self, card):
+        rolls = [random.randint(1, 6), random.randint(1, 6)]
+        rolls.sort()
+        certain_count = rolls[0]
+        uncertain_count = rolls[1]
+        certain_future = self.deck.draw_many(certain_count)
+        uncertain_future = self.deck.draw_many(uncertain_count)
+        uncertain_future, certain_future = self.prompt_user_scheme_scry(uncertain_future, certain_future)
+        self.deck.push_many(uncertain_future)
+        self.deck.shuffle()
+        random.shuffle(certain_future)
+        self.deck.push_many(certain_future)
+        # TODO: we should resolve the text portion of the scheme scry card at some point. here?
+
+    def attempt_lichdom(self):
+        truths = 0
+        companions = 0
+        influence = 0
+        for card in self.player.hand:
+            match card.cardType:
+                case CardType.TRUTH:
+                    truths += 1
+                case CardType.COMPANION:
+                    companions += 1
+                case CardType.INFLUENCE:
+                    influence += 1
+        score = companions + influence + self.player.resolve
+        rolls = []
+        for _ in range(truths):
+            roll = random.randint(1, 6)
+            rolls.append(roll)
+        print("Rolled for truths: {}".format(rolls))
+        score += sum(rolls)
+        print("Final Score: {}".format(score))
+        # TODO: There have to be better places to keep these strings
+        if score <= 4:
+            print(
+                "You die horribly, your flesh boils and your bones crumble to dust, cursing the land where you attempted the foul ritual.")
+        elif 4 < score <= 8:
+            print(
+                "You become a wraith, a half ethereal horror beyond the comprehension of other mortals. You will inevitably lose your mind and sanity in the many years ahead haunting your lair, becoming only a monster with no other ambitions besides consuming human souls. A beast far removed from your goal of power.")
+        elif 8 < score <= 11:
+            print(
+                "Your foul ritual partially succeeds, giving you immense power and an extremely long life. You will live 12 13 hundreds of years, command armies and establish cults that will outlive you… but you are not immortal. Your body will eventually wither and die, everything you built will crumble to dust, and your name will be forgotten. You are only mortal after all.")
+        elif 11 < score < 19:
+            print(
+                "You made it. Your immortal soul will linger in this world forever, just enough time to discover all the secrets of the cosmos. Your body may decay with time, but you will find younger vessels as the ages pass by. You are a lich.")
+        else:
+            print(
+                "Time doesn’t have meaning any more. Ages come and go, empires rise and fall, and you stand above them all while learning the most corrupting secrets of the void beyond reality. You have become a god")
+
+    def process_card(self, card):
+        raise "Stub"
+
+    def step(self):
+        possible_actions = self.get_step_actions()
+        selected_action_index = self.prompt_user(possible_actions)
+        selected_action = possible_actions[selected_action_index]
+        match selected_action.base_prompt:
+            case UserPromptBase.DRAW:
+                drawn_card = self.draw()
+                if drawn_card.base == DrawStepResultBase.CARD:
+                    self.process_card(drawn_card)
+                else:  # Magical Cataclysm
+                    print("PLACE HOLDER END OF WORLD TEXT")
+                    self.continue_game = False
+            case UserPromptBase.SCHEME_SCRY:
+                self.scheme_scry(selected_action.card)
+            case UserPromptBase.ATTEMPT_LICHDOM:
+                self.attempt_lichdom()
+                self.continue_game = False
+
+    def play(self):
+        while self.continue_game:
+            self.step()

@@ -49,6 +49,7 @@ class Player:
         return "{} of {}resolve, {} doom".format(self.resolve, MAX_RESOLVE - self.doom, self.doom)
 
 
+
 class PlayerTests(unittest.TestCase):
 
     def test_increase_doesnt_exceed_cap(self):
