@@ -1,7 +1,22 @@
+import  enum
 import unittest
 
 MAX_RESOLVE = 4
 MIN_RESOLVE = 0
+
+
+class PlayerStat(enum):
+    Resolve = 0
+    Doom = 1
+
+    def __str__(self):
+        match self:
+            case PlayerStat.Resolve:
+                return "Resolve"
+            case PlayerStat.Doom:
+                return "Doom"
+            case _:
+                raise ValueError("Got Unknown Value in PlayerStat: {}".format(self))
 
 
 class Player:
@@ -29,6 +44,9 @@ class Player:
         """
         self.resolve = max(MIN_RESOLVE, self.resolve - 1)
         return self.game_over()
+
+    def player_state_str(self):
+        return "{} of {}resolve, {} doom".format(self.resolve, MAX_RESOLVE - self.doom, self.doom)
 
 
 class PlayerTests(unittest.TestCase):
