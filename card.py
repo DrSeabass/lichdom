@@ -170,6 +170,11 @@ class FaceValue(Enum):
 
 
 class Card:
+    # Event Cards are just Cards
+    # Scrying / Scheming Cards are Event Cards with Delayed Text
+    # Companion and Influence Cards have no actions of their own and just display text
+    # Adversity Cards have Player driven actions
+    # Catastrophe Cards have Player driven actions
 
     def __init__(self, suit: Suit, value: FaceValue, bptext = "", fixed = [], random_sets = []):
         self.suit: Suit = suit
