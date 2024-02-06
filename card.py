@@ -186,6 +186,9 @@ class Card:
     def copy(self):
         return deepcopy(self)
 
+    def take_actions(self, player, deck):
+        raise "Stub"
+
     def __eq__(self, card2):
         return (
                 type(self) == type(card2)
