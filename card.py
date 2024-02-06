@@ -175,6 +175,12 @@ class Card:
         self.value: FaceValue = value
         self.theme: Theme = suit.get_theme()
         self.cardType: CardType = value.get_cardtype()
+        # Always display boilerplate text
+        self.boilerplate_text: str
+        # Display each of the fixed writing prompts
+        self.fixed_prompts: list
+        # Display one of each of the random prompt sets
+        self.random_prompt_sets: list
 
     def __str__(self):
         return "{} {}, {} {}".format(self.value, self.suit, self.theme, self.cardType)
