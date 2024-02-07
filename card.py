@@ -171,7 +171,8 @@ class FaceValue(Enum):
 
 class Card:
     # Event Cards are just Cards
-    # Scrying / Scheming Cards are Event Cards with Delayed Text
+    # Scrying / Scheming Cards have player driven interaction, but it's handled in game right now
+    # Plot cards are event cards with delayed text
     # Companion and Influence Cards have no actions of their own and just display text
     # Adversity Cards have Player driven actions
     # Catastrophe Cards have Player driven actions
