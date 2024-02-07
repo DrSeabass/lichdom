@@ -34,6 +34,10 @@ class Player:
     def increase_resolve(self):
         self.resolve = min(self.resolve + 1, MAX_RESOLVE - self.doom)
 
+    def increase_doom(self): # Doom does not decrease
+        self.doom += 1
+        self.resolve = min(self.resolve, MAX_RESOLVE - self.doom)
+
     def game_over(self):
         return self.resolve == MIN_RESOLVE
 
