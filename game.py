@@ -37,8 +37,8 @@ class DrawStepResultBase(enum):
 class DrawStepResult:
 
     def __init__(self, base, card):
-        self.base = base
-        self.card = card
+        self.base : DrawStepResultBase = base
+        self.card : Card = card
 
     def ends_game(self):
         if self.base == DrawStepResultBase.MAGICAL_CATACLYSM:
@@ -99,46 +99,6 @@ class Game:
             return DrawStepResult(DrawStepResultBase.MAGICAL_CATACLYSM, next_card)
         return DrawStepResult(DrawStepResultBase.CARD, next_card)
 
-    def prompt_user_scheme_scry(self, uncertain, certain):
-        print("Replace one of these cards:")
-        for index, card in enumerate(certain):
-            print("{}: {}".format(index, card))
-        print("With one of these cards:")
-        for index, card in enumerate(uncertain):
-            print("{}: {}".format(index, card))
-        user_input = input("Your Selections (in the format number, number)")
-        try:
-            selections = user_input.split(',')
-            removed_index = int(selections[0])
-            replaced_index = int(selections[1])
-            if 0 < removed_index >= len(certain):
-                print("Certain card to remove index is illegal, try again")
-                return self.prompt_user_scheme_scry(uncertain, certain)
-            if 0 < replaced_index >= len(uncertain):
-                print("Uncertain card to select index is illegal, try again")
-                return self.prompt_user_scheme_scry(uncertain, certain)
-            swap = certain[removed_index]
-            certain[removed_index] = uncertain[replaced_index]
-            uncertain[replaced_index] = swap
-            return uncertain, certain
-        except:
-            print("Couldn't understand your selections.  Please try again.")
-            return self.prompt_user_scheme_scry(uncertain, certain)
-
-    def scheme_scry(self, card):
-        rolls = [random.randint(1, 6), random.randint(1, 6)]
-        rolls.sort()
-        certain_count = rolls[0]
-        uncertain_count = rolls[1]
-        certain_future = self.deck.draw_many(certain_count)
-        uncertain_future = self.deck.draw_many(uncertain_count)
-        uncertain_future, certain_future = self.prompt_user_scheme_scry(uncertain_future, certain_future)
-        self.deck.push_many(uncertain_future)
-        self.deck.shuffle()
-        random.shuffle(certain_future)
-        self.deck.push_many(certain_future)
-        # TODO: we should resolve the text portion of the scheme scry card at some point. here?
-
     def attempt_lichdom(self):
         truths = 0
         companions = 0
@@ -193,7 +153,7 @@ class Game:
                     print("PLACE HOLDER END OF WORLD TEXT")
                     self.continue_game = False
             case UserPromptBase.SCHEME_SCRY:
-                self.scheme_scry(selected_action.card)
+                selected_action.card.take_actions(self.player, self.deck)
             case UserPromptBase.ATTEMPT_LICHDOM:
                 self.attempt_lichdom()
                 self.continue_game = False
