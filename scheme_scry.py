@@ -13,7 +13,7 @@ class Payment:
         self.type : PaymentType = type
         self.card = card
 
-class Catastrophe(Card):
+class SchemeScry(Card):
     def __init__(self, suit: Suit, value: FaceValue, bptext="", fixed=[], random_sets=[]):
         super().__init__(suit, value, bptext, fixed, random_sets)
 
