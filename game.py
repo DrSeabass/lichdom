@@ -1,4 +1,4 @@
-import enum
+from enum import Enum
 import random
 
 from card import Card, Theme, CardType
@@ -6,7 +6,7 @@ from deck import Deck
 from player import Player
 
 
-class UserPromptBase(enum):
+class UserPromptBase(Enum):
     DRAW = 0
     ATTEMPT_LICHDOM = 1
     SCHEME_SCRY = 2
@@ -29,7 +29,7 @@ class UserPrompt:
                 return str(self.card)
 
 
-class DrawStepResultBase(enum):
+class DrawStepResultBase(Enum):
     MAGICAL_CATACLYSM = 0
     CARD = 1
 

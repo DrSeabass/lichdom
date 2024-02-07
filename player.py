@@ -1,11 +1,11 @@
-import  enum
+from enum import Enum
 import unittest
 
 MAX_RESOLVE = 4
 MIN_RESOLVE = 0
 
 
-class PlayerStat(enum):
+class PlayerStat(Enum):
     Resolve = 0
     Doom = 1
 

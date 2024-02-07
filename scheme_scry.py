@@ -1,14 +1,13 @@
-import enum
+from enum import Enum
 import random
 from card import Card, CardType, FaceValue, Suit
 
-class PaymentType(enum):
+class PaymentType(Enum):
     RESOLVE = 0
     DOOM = 1
     CARD = 2
 
 class Payment:
-
     def __init__(self, type, card=None):
         self.type : PaymentType = type
         self.card = card
