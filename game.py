@@ -137,7 +137,17 @@ class Game:
                 "Time doesn’t have meaning any more. Ages come and go, empires rise and fall, and you stand above them all while learning the most corrupting secrets of the void beyond reality. You have become a god")
 
     def process_card(self, card):
-        card.take_actions(self.player, self.deck)
+        if not (
+            card.cardType == CardType.ADVERSITY or
+            card.cardType == CardType.EVENT or
+            card.cardType == CardType.CATASTROPHE
+        ):
+            self.player.hand.append(card)
+        if not ( # if not card with delayed processing
+            card.cardType == CardType.SCHEME_SCRY or
+            card.cardType == CardType.PLOTS_CURSES
+        ):
+            card.take_actions(self.player, self.deck)
         self.continue_game = self.player.resolve > 0
 
     def step(self):
@@ -150,6 +160,7 @@ class Game:
                 if drawn_card.base == DrawStepResultBase.CARD:
                     self.process_card(drawn_card.card)
                 else:  # Magical Cataclysm
+                    #TODO Handle end of world via cataclysm
                     print("PLACE HOLDER END OF WORLD TEXT")
                     self.continue_game = False
             case UserPromptBase.SCHEME_SCRY:
