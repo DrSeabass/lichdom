@@ -107,6 +107,7 @@ class Adversity(Card):
             if not retry:
                 player.decrease_resolve()
             else:
+                player.increase_doom()
                 self.take_actions(player, deck)
         for card in spent_influence:
             player.hand.remove(card)
