@@ -23,6 +23,8 @@ class Adversity(Card):
         print("Select which influences to use, remembering this task is {}.".format(self.theme))
         print("Respond with comma separated numbers, as in 1, 2, 3")
         response = input()
+        if response == "":
+            return []
         try:
             to_use = []
             for index in map(lambda x: int(x), response.split(",")):
