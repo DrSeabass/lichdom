@@ -28,7 +28,7 @@ class Catastrophe(Card):
                 return self.offer_sacrifice(options)
 
     def take_actions(self, player, deck):
-        sacrifices = self.get_companions()
+        sacrifices = self.get_companions(player)
         if len(sacrifices) > 0:
             sacrifice = self.offer_sacrifice(sacrifices)
             if sacrifice is not None:
