@@ -1,5 +1,6 @@
 from enum import Enum
 import unittest
+from card import CardType
 
 MAX_RESOLVE = 4
 MIN_RESOLVE = 0
@@ -52,6 +53,42 @@ class Player:
     def player_state_str(self):
         return "{} of {}resolve, {} doom".format(self.resolve, MAX_RESOLVE - self.doom, self.doom)
 
+
+    @staticmethod
+    def sorted_hand_segment_str(name,lst):
+        segment_str = "{} {}".format(len(lst), name)
+        for card in lst:
+            segment_str = "{}\n{}".format(segment_str, card)
+        return segment_str
+
+    def player_hand_str(self):
+        truths = []
+        influences = []
+        companions = []
+        plots = []
+        scheme_scrys = []
+
+        for card in self.hand:
+            match card.cardType:
+                case CardType.TRUTH:
+                    truths.append(card)
+                case CardType.INFLUENCE:
+                    influences.append(card)
+                case CardType.COMPANION:
+                    companions.append(card)
+                case CardType.PLOTS_CURSES:
+                    plots.append(card)
+                case CardType.SCHEME_SCRY:
+                    scheme_scrys.append(card)
+                case _:
+                    raise ValueError("Player had unexpected card in their hand: {}".format(card))
+        player_repr_str = ""
+        player_repr_str += Player.sorted_hand_segment_str("truths", truths)
+        player_repr_str += Player.sorted_hand_segment_str("influences", influences)
+        player_repr_str += Player.sorted_hand_segment_str("companions", companions)
+        player_repr_str += Player.sorted_hand_segment_str("plots", plots)
+        player_repr_str += Player.sorted_hand_segment_str("schemes and scrying", scheme_scrys)
+        return player_repr_str
 
 
 class PlayerTests(unittest.TestCase):
