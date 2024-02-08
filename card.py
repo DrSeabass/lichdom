@@ -169,6 +169,11 @@ class FaceValue(Enum):
                 raise TypeError("Unexpected value {}".format(self))
 
 
+class RandomPrompt:
+    def __init__(self, prompt:str , responses: list):
+        self.prompt : str = prompt
+        self.responses: list = responses
+
 class Card:
     # Event Cards are just Cards
     # Scrying / Scheming Cards have player driven interaction, but it's handled in game right now
