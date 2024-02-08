@@ -8,8 +8,9 @@ from player import Player
 
 class UserPromptBase(Enum):
     DRAW = 0
-    ATTEMPT_LICHDOM = 1
-    SCHEME_SCRY = 2
+    DISPLAY_PLAYER_HAND = 1
+    ATTEMPT_LICHDOM = 2
+    SCHEME_SCRY = 3
 
 
 class UserPrompt:
@@ -23,6 +24,8 @@ class UserPrompt:
         match self.base_prompt:
             case UserPromptBase.DRAW:
                 return "Draw a Card"
+            case UserPromptBase.DISPLAY_PLAYER_HAND:
+                return "Show Player Hand"
             case UserPromptBase.ATTEMPT_LICHDOM:
                 return "Attempt the Lichdom Ritual"
             case UserPromptBase.SCHEME_SCRY:
@@ -61,7 +64,10 @@ class Game:
         # otherwise, force the draw step
 
         truth_count = 0
-        prompts = [UserPrompt(UserPromptBase.DRAW)]
+        prompts = [
+            UserPrompt(UserPromptBase.DRAW),
+            UserPrompt(UserPromptBase.DISPLAY_PLAYER_HAND)
+        ]
         for card in self.player.hand:
             if card.cardType == CardType.TRUTH:
                 truth_count += 1
@@ -73,6 +79,7 @@ class Game:
         return prompts
 
     def prompt_user(self, prompt_actions):
+        print(self.player.player_state_str())
         for index, action in enumerate(prompt_actions):
             print("{}: {}".format(index, action))
         user_input = input("Choose an action (by inputting the number): ")
@@ -163,11 +170,14 @@ class Game:
                     #TODO Handle end of world via cataclysm
                     print("PLACE HOLDER END OF WORLD TEXT")
                     self.continue_game = False
+            case UserPromptBase.DISPLAY_PLAYER_HAND:
+                print(self.player.player_hand_str())
             case UserPromptBase.SCHEME_SCRY:
                 selected_action.card.take_actions(self.player, self.deck)
             case UserPromptBase.ATTEMPT_LICHDOM:
                 self.attempt_lichdom()
                 self.continue_game = False
+
 
     def play(self):
         while self.continue_game:
