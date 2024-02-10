@@ -417,28 +417,239 @@ that think you are a god."""]
         ]
     },
     FaceValue.NINE: {
-        "boiler_plate": """""",
-        "fixed_prompts": [],
-        "random_prompts": []
+        "boiler_plate":
+"""
+Afamous philosopher,
+reputable merchant or
+powerful noble tries to
+humiliate you or instigate others
+against you. You must stop them
+before this profanation causes
+real damage.
+""",
+        "fixed_prompts": [
+"How do you silence or remove the instigators?",
+"What do you lose or gain in the process?"
+        ],
+        "random_prompts": [
+RandomPrompt("What are the accusations, true or false, against you?",
+[
+"""
+Sending forth mercenaries
+to steal the children and
+using them for your
+alchemy of the fl esh.""",
+"""Unleashing destructive
+storms, long blizzards and
+decimating droughts with
+your vile sorcery.""",
+"""Rising the death and
+releasing unholy beasts
+upon the land, searching for
+a place of ancient worship."""
+]),
+RandomPrompt("What are the consequences?",
+[
+"""A furious mob only
+appeased by the destruction
+of your tower and removal
+of your person away from
+their lands.""",
+"""Loss of favour in court and
+animosity against your
+political manoeuvres.""",
+"""A young and zealous knight
+of a new religion leading
+an order of righteousness
+against your creations.
+"""])]
     },
     FaceValue.TEN: {
-        "boiler_plate": """""",
-        "fixed_prompts": [],
-        "random_prompts": []
+        "boiler_plate":
+"""
+Envious enemies conspire
+against you and plot
+your failure, striking
+precisely at a critical moment
+or committing an unexpected
+treachery.""",
+        "fixed_prompts": [
+"Who conspired against you and why?",
+"Are they a known enemy?"
+"""Do they act out of greed or
+to stop your progress in the
+dark arts?"""],
+        "random_prompts": [
+RandomPrompt("Who works against you?",
+["""The secretive Guild of Silent
+Whispers, traders of truths
+and violence that sell to the
+highest bidder.""",
+"""A nemesis from your youth;
+serving a growing hate
+throughout the years that
+can only culminate with
+spilled blood or worse.""",
+"""An ambitious noble house
+that perceives you as a
+threat or seeks vengeance
+for your present or past
+allegiances."""]),
+RandomPrompt("How did they conspire?",
+[
+"""
+Masterful spies within your
+own household reveal your
+plans to your enemies.""",
+"""Large bribes fi lling the
+pockets of infl uential people
+working against you.""",
+"""Inconvenient truths about
+your doings spread among
+the powerful, who now look
+at you with distrust
+"""])]
     },
     FaceValue.JACK: {
-        "boiler_plate": """""",
-        "fixed_prompts": [],
-        "random_prompts": []
+        "boiler_plate": """
+You encounter a mortal
+companion that follows
+you on your ambitious
+quest. Their skills will be useful
+in the mundane world of politics
+and favours you need to navigate
+before transcending to lichdom.
+But do not get too attached, they
+are mortal and dispensable, after
+all.""",
+        "fixed_prompts": [
+"What is their name?",
+"What do they look like?",
+"How do you meet?",
+"Why do they ally with you?"
+        ],
+        "random_prompts": [
+RandomPrompt("Who is this curious character?",
+[
+"""A courtesan of an emperor,
+warlord or king. A dealer of
+secrets and lies that change
+nations, move armies and
+sink fl eets.""",
+"""The keeper of the annals of
+a powerful state, protecting
+the records of all signifi cant
+events since the Cataclysm
+that destroyed the ancients.""",
+"""An infl uential merchant
+of lowly origins that has
+contacts among the lower
+casts of society."""]),
+RandomPrompt("What occupies their mind?",
+["""A large debt to powerful
+and vengeful people.""",
+"""Holds a terrible secret and
+fears the consequences of
+what they did.""",
+"""Profoundly religious, they
+believe you have been sent
+by a terrible god."""])]
     },
     FaceValue.QUEEN: {
-        "boiler_plate": """""",
-        "fixed_prompts": [],
-        "random_prompts": []
+        "boiler_plate": """
+Someone powerful owes
+you a favour, accepts
+a bribe, or responds to
+blackmail, making them inclined
+to act in your benefi t.
+The aid comes from mortals
+focused on their own petty lives,
+but they can still be useful tools
+in your quest if used correctly,
+even if the fallible tool breaks in
+the process.""",
+        "fixed_prompts": [
+"""What did you do for them
+or how much did you pay
+for their services?
+""",
+"""Do they fear the awful
+consequences of not being
+faithful to their obligations?""",
+"""How do they help you to
+overcome a challenge?"""],
+        "random_prompts": [
+RandomPrompt("Who owes you a favour?",
+[
+"""The Master of Secrets in
+court, who controls which
+versions of the truth are
+whispered to the ear of the
+king and who is considered
+a threat to the dynasty and
+treasury.""",
+"""The High Priestess of
+Ashura, who can freely
+interpret messages from
+their strange god to
+infl uence devout followers.""",
+"""You have evidence, either
+masterfully fabricated or
+genuine, to blackmail the
+chief advisor of the holy
+emperor. Fear of rolling
+heads and dishonour makes
+them inclined to help you."""
+        ])
+        ]
     },
     FaceValue.KING: {
-        "boiler_plate": """""",
-        "fixed_prompts": [],
-        "random_prompts": []
+        "boiler_plate": """
+A terrible mundane event
+that shakes your place
+in the world, political
+landscape and society.
+""",
+        "fixed_prompts": [
+"""Did you cause this
+catastrophe?""",
+"""How did you escape and
+what did it cost you?""",
+],
+        "random_prompts": [
+RandomPrompt("""How did you change after
+this event?
+""",
+             [
+"""You are declared an enemy
+of the crown and have to
+abandon your tower before
+soldiers burn everything to
+the ground.""",
+"""Your own servants come
+shrouded by night and
+attempt to take your life with
+vile poisons or sharp steel.""",
+"""The death of a vile king with
+a favourable disposition
+towards your dark arts,
+leaving you vulnerable and
+surrounded by infl uential
+enemies.""",
+"""A new cult to an intransigent
+and cruel god spreads like
+wildfi re; its followers are
+openly hostile against all
+types of magic.""",
+"""An old enemy you took for
+dead returns to your life
+in a position of power and
+infl uence, making your life
+diffi cult.""",
+"""Some of your secrets are
+stolen by skillfull thieves,
+leaving you vulnerable to
+blackmail"""])
+        ]
     }
 }
