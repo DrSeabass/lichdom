@@ -2,27 +2,36 @@ from card import Suit, FaceValue, Card, CardType
 from catastrophe import Catastrophe
 from adversity import Adversity
 from scheme_scry import SchemeScry
+import hearts
 from copy import deepcopy
 import random
 import unittest
 
+SLUGS = {
+    Suit.HEARTS : hearts.card_slugs
+}
 
 class Deck:
 
     def __init__(self):
         self.cards = []
         for suit in Suit:
+            # Testing to make sure we draw to defined suit
+            # TODO: Remove me
+            if suit != Suit.HEARTS:
+                continue
             for value in FaceValue:
                 card_type = FaceValue.get_face_cardtype(value)
+                slug = SLUGS[suit][value]
                 match card_type:
                     case CardType.CATASTROPHE:
-                        self.cards.append(Catastrophe(suit, value))
+                        self.cards.append(Catastrophe(suit, value, slug))
                     case CardType.ADVERSITY:
-                        self.cards.append(Adversity(suit, value))
+                        self.cards.append(Adversity(suit, value, slug))
                     case CardType.SCHEME_SCRY:
-                        self.cards.append(SchemeScry(suit, value))
+                        self.cards.append(SchemeScry(suit, value, slug))
                     case _:
-                        self.cards.append(Card(suit, value))
+                        self.cards.append(Card(suit, value, slug))
 
     def __len__(self):
         return len(self.cards)
