@@ -1,4 +1,4 @@
-from card import FaceValue
+from card import FaceValue, RandomPrompt
 
 card_slugs = {
     FaceValue.ACE: {
