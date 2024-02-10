@@ -3,7 +3,6 @@ from copy import deepcopy
 from enum import Enum
 import unittest
 
-
 class Theme(Enum):
     MUNDANE = 0
     ARCANE = 1
@@ -174,6 +173,12 @@ class RandomPrompt:
         self.prompt : str = prompt
         self.responses: list = responses
 
+EMPTY_SLUG = {
+    "boiler_plate": "",
+    "fixed_prompts": [],
+    "random_prompts" : []
+}
+
 class Card:
     # Event Cards are just Cards
     # Scrying / Scheming Cards have player driven interaction, but it's handled in game right now
@@ -182,17 +187,19 @@ class Card:
     # Adversity Cards have Player driven actions
     # Catastrophe Cards have Player driven actions
 
-    def __init__(self, suit: Suit, value: FaceValue, bptext = "", fixed = [], random_sets = []):
+    def __init__(self, suit: Suit, value: FaceValue, slug=EMPTY_SLUG):
+        if list(EMPTY_SLUG.keys()) != list(slug.keys()):
+            raise ValueError("Missing required keys. Got {}, expected {}".format(list(slug.keys()), list(EMPTY_SLUG.keys())))
         self.suit: Suit = suit
         self.value: FaceValue = value
         self.theme: Theme = suit.get_theme()
         self.cardType: CardType = value.get_cardtype()
         # Always display boilerplate text
-        self.boilerplate_text: str = bptext
+        self.boilerplate_text: str = slug["boiler_plate"]
         # Display each of the fixed writing prompts
-        self.fixed_prompts: list = fixed
+        self.fixed_prompts: list = slug["fixed_prompts"]
         # Display one of each of the random prompt sets
-        self.random_prompt_sets: list = random_sets
+        self.random_prompt_sets: list = slug["random_prompts"]
 
     def __str__(self):
         return "{} {}, {} {}".format(self.value, self.suit, self.theme, self.cardType)
@@ -206,9 +213,9 @@ class Card:
         for fp in self.fixed_prompts:
             print(fp)
             print()
-        for prompt_set in self.random_prompt_sets:
-            picked = random.choice(prompt_set)
-            print(picked)
+        for prompt in self.random_prompt_sets:
+            print(prompt.prompt)
+            print(random.choice(prompt.responses))
             print()
 
     def __eq__(self, card2):

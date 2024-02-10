@@ -1,8 +1,8 @@
 from card import Card, CardType, FaceValue, Suit
 
 class Catastrophe(Card):
-    def __init__(self, suit: Suit, value: FaceValue, bptext="", fixed=[], random_sets=[]):
-        super().__init__(suit, value, bptext, fixed, random_sets)
+    def __init__(self, suit: Suit, value: FaceValue, slug={}):
+        super().__init__(suit, value, slug)
 
     def get_companions(self, player):
         available_companions = []

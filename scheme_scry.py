@@ -13,8 +13,8 @@ class Payment:
         self.card = card
 
 class SchemeScry(Card):
-    def __init__(self, suit: Suit, value: FaceValue, bptext="", fixed=[], random_sets=[]):
-        super().__init__(suit, value, bptext, fixed, random_sets)
+    def __init__(self, suit: Suit, value: FaceValue, slug={}):
+        super().__init__(suit, value, slug)
 
     def prompt_user_scheme_scry(self, uncertain, certain):
         print("Replace one of these cards:")
