@@ -169,7 +169,7 @@ class FaceValue(Enum):
 
 
 class RandomPrompt:
-    def __init__(self, prompt:str , responses: list):
+    def __init__(self, prompt: str, responses: list) -> object:
         self.prompt : str = prompt
         self.responses: list = responses
 
