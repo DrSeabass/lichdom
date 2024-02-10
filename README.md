@@ -1,4 +1,19 @@
 # lichdom-in-python
+This is an implementation of the solo journaling TTRPG Lichdom.  Whereas the base game was designed to be played
+with dice, a standard 52-card deck, pens, and paper, this version is (currently) meant to be played through the
+python REPL.
+
+I'm hoping this improves some things I found frustrating about the player experience:
+* Physically journaling my game made it hard to share with others online
+* Maintaining the state of the deck between play sessions was tedious
+* Flipping back and forth in the PDF / physical book when drawing cards slowed play
+
+# TODOs
+* Finish inputting card definitions from the game
+* Implement a proper state machine & command / action pattern for game logic
+* Add saving & loading of game state so sessions are resumable
+* Add ability to flush text prompts into some archival format
+* Clean up text display
 
 # Outside Refrences
 
