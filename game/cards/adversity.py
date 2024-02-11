@@ -46,7 +46,8 @@ class Adversity(Card):
                 elif card.cardType == CardType.COMPANION:
                     print("One of your companions aids you in this trial")
                     modifiers += 1
-                elif card.cardType == CardType.ADVERSITY:
+                elif card.cardType == CardType.PLOTS_CURSES:
+                    print("An earlier plot or curse influences the trial")
                     modifiers -= 2
                     to_resolve.append(card)
             elif card.cardType == CardType.INFLUENCE:
