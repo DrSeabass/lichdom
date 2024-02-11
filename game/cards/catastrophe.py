@@ -36,8 +36,10 @@ class Catastrophe(Card):
                 print("You sacrificed a companion ({}) to avoid catastrophe!".format(sacrifice))
             else:
                 player.increase_doom()
+                player.decrease_resolve()
         else:
             player.increase_doom()
+            player.decrease_resolve()
         deck.push(self)
         deck.shuffle()
         super().take_actions(player, deck)
