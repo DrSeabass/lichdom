@@ -1,6 +1,7 @@
 import random
 from game.cards.card import Card, Suit, FaceValue, CardType
 
+
 class Adversity(Card):
 
     def __init__(self, suit: Suit, value: FaceValue, slug={}):
@@ -57,7 +58,7 @@ class Adversity(Card):
         for card in spent_influence:
             score = 0
             if card.theme == self.theme:
-                score += random.randint(1,6)
+                score += random.randint(1, 6)
                 score += random.randint(1, 6)
             else:
                 score += random.randint(1, 6)
@@ -65,12 +66,13 @@ class Adversity(Card):
             influence_modifier += score
         return influence_modifier
 
-    def check_target(self, target, modifiers):
+    @staticmethod
+    def check_target(target, modifiers):
         if (target - modifiers) <= 2:
             print("Your preparations allow you to overcome the challenge with ease.")
             return True
         else:
-            roll = random.randint(1,6) + random.randint(1,6)
+            roll = random.randint(1, 6) + random.randint(1, 6)
             if (roll + modifiers) >= target:
                 print("You successfully navigate the difficulty.")
                 return True
@@ -103,7 +105,7 @@ class Adversity(Card):
         spent_influence = self.choose_influences(possible_influence)
         modifiers += self.use_influence(spent_influence)
         target = self.get_threshold()
-        success = self.check_target(target, modifiers)
+        success = Adversity.check_target(target, modifiers)
         if not success:
             retry = self.offer_retry(player)
             if not retry:
