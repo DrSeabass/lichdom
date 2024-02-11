@@ -312,9 +312,10 @@ card_slugs = {
         "fixed_prompts": [
             """Did you cause this catastrophe?""",
             """How did you escape and what did it cost you?""",
+            """How did you change after this event?"""
         ],
         "random_prompts": [
-            RandomPrompt("""How did you change after this event?""",
+            RandomPrompt("",
                          [
                              """You are declared an enemy of the crown and have to abandon your tower before soldiers
                              burn everything to the ground.""",

@@ -16,7 +16,7 @@ card_slugs = {
                     """Revealed by the ancient traditions and legends of a disappearing tribe. You had to submit
                     them to your will to reveal their secrets.""",
                     """Discovered by alchemical research and bloody experimentation at the cost of many lives."""]),
-            RandomPrompt("What is it?",[
+            RandomPrompt("What is it?", [
                 """Rejuvenate your ageing body by consuming the flesh of the youthful under a blood moon.""",
                 """Life force can be extracted from mortals from the distillation of their humours, producing pure
                 life essence that will extend your life and give you strength.""",
@@ -41,10 +41,10 @@ card_slugs = {
         ],
         "random_prompts": [
             RandomPrompt("Who sent the thieves?",
-[
-    """The Circle of Sequestered Mystics, collectors of ancient wonders that practice restraint in magic.""",
-    """The Mercantile Guild, who seeks profit above all else.""",
-    """Nobody. A thief with an ambition reaching further than his skills. You like him, but failure has a price"""])
+                         [
+                             """The Circle of Sequestered Mystics, collectors of ancient wonders that practice restraint in magic.""",
+                             """The Mercantile Guild, who seeks profit above all else.""",
+                             """Nobody. A thief with an ambition reaching further than his skills. You like him, but failure has a price"""])
         ]
     },
     FaceValue.THREE: {
@@ -61,11 +61,11 @@ card_slugs = {
         ],
         "random_prompts": [
             RandomPrompt("Why did you create it?",
-[
-    """To learn and understand secrets that could extend your own life in the future through unnatural means.""",
-    """As a stealthy and faithful killer; a creature unclouded by conscience, remorse, or delusions of morality to send
+                         [
+                             """To learn and understand secrets that could extend your own life in the future through unnatural means.""",
+                             """As a stealthy and faithful killer; a creature unclouded by conscience, remorse, or delusions of morality to send
     against your enemies.""",
-    """To clone key powerful fi gures that you planned on supplanting by your mind controlled puppets."""])
+                             """To clone key powerful fi gures that you planned on supplanting by your mind controlled puppets."""])
         ]
     },
     FaceValue.FOUR: {
@@ -145,13 +145,13 @@ card_slugs = {
             "Where do you fi ght it?"
         ],
         "random_prompts": [
-            RandomPrompt("Why do you confront this beast?",[
+            RandomPrompt("Why do you confront this beast?", [
                 """It protects the Iron Eye of the Blind God, an artefact that allows strong minds to embark
                 on a dangerous atavistic voyage.  What horrors do you see in the distant past?""",
                 """You awakened it from its slumber of ages to find answers. What do you ask when you defeat it?""",
                 """You need its black and poisonous heart for a sorcerous concoction. What alchemy are you trying to 
                 create?"""]),
-            RandomPrompt("What is this creature?",[
+            RandomPrompt("What is this creature?", [
                 """A serpent-demon with a tongue of stone and eyes that see into several realities.""",
                 """A tentacled horror beyond this world that consumes flesh and light with its demonic maw.""",
                 """An intelligent and terrifying chimera escaped from the laboratory of a sorcerer."""])
@@ -168,11 +168,11 @@ card_slugs = {
             "How did you survive and how did you take revenge?",
         ],
         "random_prompts": [
-            RandomPrompt("How did they attempt murder?",[
+            RandomPrompt("How did they attempt murder?", [
                 """They poisoned your food, but someone else tried it first and died in agony.""",
                 """Trespassers revealed by their furtive steps in the night and the glimmer of murderous blades.""",
                 """A shadow demon hidden in the body of a servant tried to steal your soul."""]),
-            RandomPrompt("How did they get close to you?",[
+            RandomPrompt("How did they get close to you?", [
                 """Someone helped them to defeat your protections with sorcerous knowledge.""",
                 """They infiltrated your household long ago pretending to be servants.""",
                 """On your way to the court of a noble. They knew you were coming"""])
@@ -189,11 +189,11 @@ card_slugs = {
             "What is the nature of the warrior’s magical protection?"
         ],
         "random_prompts": [
-            RandomPrompt("Who is this warrior?",[
+            RandomPrompt("Who is this warrior?", [
                 """A lonely steel wielding barbarian with gigantic melancholies and gigantic mirth.""",
                 """An iron-clad knight who wanders the land with a faithful squire.""",
                 """A head hunter of an uncivilised tribe beyond the great gorge that splits the Plains of Ash."""]),
-            RandomPrompt("Why is the warrior coming to kill you?",[
+            RandomPrompt("Why is the warrior coming to kill you?", [
                 """Revenge, either misplaced or justified, guides their path towards you.""",
                 """Sworn to destroy all dark sorcery in the name of a temple of good and light.""",
                 """The glory that comes from claiming your head and the profitable loot to be found."""])
@@ -206,14 +206,14 @@ card_slugs = {
             "How is violence involved in the treachery?"
         ],
         "random_prompts": [
-            RandomPrompt("Who works against you?",[
+            RandomPrompt("Who works against you?", [
                 """The Mercantile Guild, seeking retribution over an old grudge that nobody remembers, but bureaucracy
                 is slow and due revenge comes late.""",
                 """The Temple of the Undying Light, too ambitious to let pass an opportunity to hurt you and
                 increase their influence.""",
                 """The Company of the Purple Heart, a daring band of mercenaries hired by an old enemy to disrupt your
                 plans."""]),
-            RandomPrompt("How did they conspire?",[
+            RandomPrompt("How did they conspire?", [
                 """A hired killer is sent against you and your servants, forcing you to deal with it before it becomes
                 a bigger problem.""",
                 """The assault of your tower and theft of an artefact you need to achieve your goals,
@@ -232,11 +232,11 @@ card_slugs = {
             "Why do they ally with you?"
         ],
         "random_prompts": [
-            RandomPrompt("Who is this curious character?",[
+            RandomPrompt("Who is this curious character?", [
                 "A seasoned warrior, a captain veteran of many slaughters and a natural leader when blades shine.",
                 "An assassin who sold their soul to a terrible god to become as silent as the shadow of death itself.",
                 "A fallen knight of a religious order, full of shame and greed."""]),
-            RandomPrompt("What is special about them?",[
+            RandomPrompt("What is special about them?", [
                 """Came back from death and is compelled to aid you by ancient sorcery, but he truly hates you.""",
                 """Has many contacts in the higher casts of society, where she is feared as an envoy of death.""",
                 """Has been exiled from her land and seeks revenge."""])
@@ -253,7 +253,7 @@ card_slugs = {
             "What happens to them if they fail?"
         ],
         "random_prompts": [
-            RandomPrompt("Who owes you a favour or takes your coin?",[
+            RandomPrompt("Who owes you a favour or takes your coin?", [
                 """The Silent Death, a secretive guild of assassins that pride themselves on their obscure traditions
                 and efficiency. You suspect someone you know is behind the organisation.""",
                 """The Blades of the Purple Heart, a mercenary company with the ruthlessness to make your dark bidding
@@ -267,9 +267,10 @@ card_slugs = {
         "fixed_prompts": [
             "Did you cause this catastrophe?",
             "How did you escape and what did it cost you?",
+            "How did you change after this event?"
         ],
         "random_prompts": [
-            RandomPrompt("How did you change after this event?",[
+            RandomPrompt("", [
                 """War ravages the land, crops go unharvested, fire consumes cities and blood feeds the soil.
                 How are you involved?""",
                 """You are ambushed on your way to another place. Where were you headed? Who or what attacks you?""",
