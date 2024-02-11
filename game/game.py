@@ -87,6 +87,9 @@ class Game:
             selected_index = int(user_input)
             if 0 <= selected_index < len(prompt_actions):
                 return selected_index
+            else:
+                print("{} was a bad selection.".format(user_input))
+                return self.prompt_user(prompt_actions)
         except ValueError:
             print("{} was a bad selection.".format(user_input))
             return self.prompt_user(prompt_actions)
