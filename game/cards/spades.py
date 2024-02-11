@@ -96,7 +96,7 @@ their capricious favour or avoid their menacing wrath. Either to clean an offens
 the dark entity, such terrible acts of ritual murder do not go unnoticed by other mortals around you. For better or
 worse, your notoriety increases among mortals and immortal entities.""",
         "fixed_prompts": [
-            "Who do you sacrifi ce and why have they been chosen?",
+            "Who do you sacrifice and why have they been chosen?",
             "Who is the dark entity and why do you seek to appease it or attract its favour?",
             "Who notices your advances in the dark arts?"
         ],
@@ -138,7 +138,7 @@ the screaming sacrifice."""])
         "boiler_plate": """Your craving for power takes you to an ageless tomb or crumbling temple long lost beyond
 a natural barrier, now avoided by all civilised cultures due to ancient legends or real dangers.""",
         "fixed_prompts": [
-            "Where are the ruins located and why are they diffi cult to reach?",
+            "Where are the ruins located and why are they difficult to reach?",
             "Who dies in the journey?"
         ],
         "random_prompts": [
