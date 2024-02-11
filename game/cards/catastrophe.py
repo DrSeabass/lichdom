@@ -38,4 +38,6 @@ class Catastrophe(Card):
                 player.increase_doom()
         else:
             player.increase_doom()
+        deck.push(self)
+        deck.shuffle()
         super().take_actions(player, deck)
