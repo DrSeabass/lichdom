@@ -1,6 +1,6 @@
 from enum import Enum
 import unittest
-from card import CardType
+from game.cards.card import CardType
 
 MAX_RESOLVE = 4
 MIN_RESOLVE = 0

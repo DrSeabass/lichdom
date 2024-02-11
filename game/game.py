@@ -1,9 +1,9 @@
 from enum import Enum
 import random
 
-from card import Card, Theme, CardType
-from deck import Deck
-from player import Player
+from game.cards.card import Card, Theme, CardType
+from game.cards.deck import Deck
+from game.player import Player
 
 
 class UserPromptBase(Enum):

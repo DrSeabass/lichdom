@@ -1,5 +1,5 @@
 import random
-from card import Card, Suit, FaceValue, CardType
+from game.cards.card import Card, Suit, FaceValue, CardType
 
 class Adversity(Card):
 

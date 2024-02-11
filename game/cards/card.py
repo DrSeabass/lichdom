@@ -3,6 +3,7 @@ from copy import deepcopy
 from enum import Enum
 import unittest
 
+
 class Theme(Enum):
     MUNDANE = 0
     ARCANE = 1
@@ -169,15 +170,17 @@ class FaceValue(Enum):
 
 
 class RandomPrompt:
-    def __init__(self, prompt: str, responses: list) -> object:
-        self.prompt : str = prompt
+    def __init__(self, prompt: str, responses: list):
+        self.prompt: str = prompt
         self.responses: list = responses
+
 
 EMPTY_SLUG = {
     "boiler_plate": "",
     "fixed_prompts": [],
-    "random_prompts" : []
+    "random_prompts": []
 }
+
 
 class Card:
     # Event Cards are just Cards
@@ -189,7 +192,8 @@ class Card:
 
     def __init__(self, suit: Suit, value: FaceValue, slug=EMPTY_SLUG):
         if list(EMPTY_SLUG.keys()) != list(slug.keys()):
-            raise ValueError("Missing required keys. Got {}, expected {}".format(list(slug.keys()), list(EMPTY_SLUG.keys())))
+            raise ValueError(
+                "Missing required keys. Got {}, expected {}".format(list(slug.keys()), list(EMPTY_SLUG.keys())))
         self.suit: Suit = suit
         self.value: FaceValue = value
         self.theme: Theme = suit.get_theme()

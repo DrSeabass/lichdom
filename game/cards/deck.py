@@ -1,14 +1,20 @@
-from card import Suit, FaceValue, Card, CardType
-from catastrophe import Catastrophe
-from adversity import Adversity
-from scheme_scry import SchemeScry
-import hearts
+from game.cards.card import Suit, FaceValue, Card, CardType
+from game.cards.catastrophe import Catastrophe
+from game.cards.adversity import Adversity
+from game.cards.scheme_scry import SchemeScry
+import game.cards.hearts as hearts
+import game.cards.diamonds as diamonds
+import game.cards.clubs as clubs
+import game.cards.spades as spades
 from copy import deepcopy
 import random
 import unittest
 
 SLUGS = {
-    Suit.HEARTS : hearts.card_slugs
+    Suit.HEARTS : hearts.card_slugs,
+    Suit.DIAMONDS : diamonds.card_slugs,
+    Suit.CLUBS : clubs.card_slugs,
+    Suit.SPADES : spades.card_slugs
 }
 
 class Deck:
@@ -16,10 +22,6 @@ class Deck:
     def __init__(self):
         self.cards = []
         for suit in Suit:
-            # Testing to make sure we draw to defined suit
-            # TODO: Remove me
-            if suit != Suit.HEARTS:
-                continue
             for value in FaceValue:
                 card_type = FaceValue.get_face_cardtype(value)
                 slug = SLUGS[suit][value]

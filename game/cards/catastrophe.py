@@ -1,4 +1,4 @@
-from card import Card, CardType, FaceValue, Suit
+from game.cards.card import Card, CardType, FaceValue, Suit
 
 class Catastrophe(Card):
     def __init__(self, suit: Suit, value: FaceValue, slug={}):

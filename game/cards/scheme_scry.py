@@ -1,6 +1,6 @@
 from enum import Enum
 import random
-from card import Card, CardType, FaceValue, Suit
+from game.cards.card import Card, CardType, FaceValue, Suit
 
 class PaymentType(Enum):
     RESOLVE = 0
