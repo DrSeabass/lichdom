@@ -111,5 +111,6 @@ class SchemeScry(Card):
                 player.hand.remove(payment.card)
             case PaymentType.ABANDON:
                 return
+        player.hand.remove(self)
         self.scheme_scry(deck)
         super().take_actions(player, deck)
