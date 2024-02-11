@@ -121,5 +121,5 @@ class Adversity(Card):
             player.hand.remove(card)
         for card in to_resolve:
             player.hand.remove(card)
-            card.take_actions()
+            card.take_actions(player, deck)
         super().take_actions(player, deck)
