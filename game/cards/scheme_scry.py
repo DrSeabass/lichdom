@@ -7,6 +7,7 @@ class PaymentType(Enum):
     RESOLVE = 0
     DOOM = 1
     CARD = 2
+    ABANDON = 3
 
     def __str__(self):
         match self:
@@ -16,6 +17,8 @@ class PaymentType(Enum):
                 return "Gain 1 Doom"
             case PaymentType.CARD:
                 return "Sacrifice a Card"
+            case PaymentType.ABANDON:
+                return "Abandon attempt and pay no cost"
 
 
 class Payment:
@@ -74,7 +77,11 @@ class SchemeScry(Card):
         deck.push_many(certain_future)
 
     def find_possible_payment(self, player):
-        options = [Payment(PaymentType.RESOLVE), Payment(PaymentType.DOOM)]
+        options = [Payment(PaymentType.ABANDON)]
+        if player.resolve > 1:
+            options.append(Payment(PaymentType.RESOLVE))
+        if player.doom < 3:
+            options.append(Payment(PaymentType.DOOM))
         for card in player.hand:
             if card.cardType == CardType.INFLUENCE or card.cardType == CardType.SCHEME_SCRY:
                 if card is not self:
@@ -95,6 +102,14 @@ class SchemeScry(Card):
     def take_actions(self, player, deck):
         options = self.find_possible_payment(player)
         payment = self.prompt_user_cost(options)
-        player.hand.remove(payment)
+        match payment.type:
+            case PaymentType.DOOM:
+                player.increase_doom()
+            case PaymentType.RESOLVE:
+                player.decrease_resolve()
+            case PaymentType.CARD:
+                player.hand.remove(payment.card)
+            case PaymentType.ABANDON:
+                return
         self.scheme_scry(deck)
         super().take_actions(player, deck)
