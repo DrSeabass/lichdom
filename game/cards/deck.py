@@ -52,7 +52,6 @@ class Deck:
 
     def push_many(self, to_add: list):
         for card in to_add:
-            assert (type(card) == Card)
             if card in self.cards:
                 raise ValueError("Decks cannot contain duplicate cards.  Deck already had {}.".format(card))
         self.cards = to_add + self.cards
