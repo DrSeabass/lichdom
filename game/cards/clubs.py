@@ -33,7 +33,7 @@ from their mortal worshippers.
         """,
         "fixed_prompts": [
             "How did you contact them and what was the cost?",
-            "What answers do you seek and why can’t you fi nd them without their help?",
+            "What answers do you seek and why can’t you find them without their help?",
             "What do they want from you in return that they can’t take by themselves?",
             "Do you keep worshipping them after your encounter and do you try to spread its cult to other mortals?"],
         "random_prompts": [

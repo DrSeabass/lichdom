@@ -150,7 +150,7 @@ a millennia ago.""",
 for immortality.""",
     """The tomb of the first wizard to walk your world, as the legend says that consuming its mellified body
 can extend life."""]),
-            RandomPrompt("What horrors do you fi nd?",
+            RandomPrompt("What horrors do you find?",
 [
     "Savage tribes of pale men live underground and hunt all that moves above.",
     "An unwelcoming hive mind that emerges from millions of semi-intelligent arachnids living in the ruins.""",
@@ -201,8 +201,8 @@ in a nightmare of melancholy; grim spirits in the void beyond reality.""",
     "Through an ephemeral portal opened by a grim ritual learned from the infamous Book of Skelos."]),
             RandomPrompt("What challenges you?",
 [
-    "The hateful spirit of an old enemy fi nds you. It seeks your eternal doom.",
-    "The entrance into this chaotic world closes and you must fi nd another exit.",
+    "The hateful spirit of an old enemy finds you. It seeks your eternal doom.",
+    "The entrance into this chaotic world closes and you must find another exit.",
     "A demon made of shadow challenges you to solve his riddle before releasing you from his grasp."])
         ]
     },

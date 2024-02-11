@@ -33,7 +33,7 @@ An undying body might be achievable by worshipping foul gods that demand abhorre
     FaceValue.TWO: {
         "boiler_plate": """The greed of merchants doesn’t know limits, and this particular guild pushed a little too
 far by making demands of someone such as yourself, who delves in magic and secrets that would shatter their minds. 
-But they do have something you need, and you must fi nd a way to snatch it from their greedy hands before someone else
+But they do have something you need, and you must find a way to snatch it from their greedy hands before someone else
 takes interest.""",
         "fixed_prompts": [
             """What unreasonable price did they ask for in their hubris?""",

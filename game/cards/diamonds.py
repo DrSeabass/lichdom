@@ -20,7 +20,7 @@ them to your will to reveal their secrets.""",
                 """Life force can be extracted from mortals from the distillation of their humours, producing pure
 life essence that will extend your life and give you strength.""",
                 """Elder trees never die, their roots extend below ground and control the undying cycle of nature.
-You learn the reason for their eternal existence, or fi nd a way to merge your body into the immortal tree."""
+You learn the reason for their eternal existence, or find a way to merge your body into the immortal tree."""
             ])
         ]
     },
