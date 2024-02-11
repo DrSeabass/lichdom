@@ -9,11 +9,11 @@ I'm hoping this improves some things I found frustrating about the player experi
 * Flipping back and forth in the PDF / physical book when drawing cards slowed play
 
 # TODOs
-* Finish inputting card definitions from the game
-* Implement a proper state machine & command / action pattern for game logic
+* Fix structure of code, introduce modules
+* Clean up text display
 * Add saving & loading of game state so sessions are resumable
 * Add ability to flush text prompts into some archival format
-* Clean up text display
+* Implement a proper state machine & command / action pattern for game logic
 
 # Outside Refrences
 
