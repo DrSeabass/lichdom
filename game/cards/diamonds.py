@@ -142,7 +142,7 @@ confidential meetings held under the Jade Spire of the ancient city of Lagash.""
 and history books tell the story of heroic mortals that perished in their attempt to destroy its dark soul.""",
         "fixed_prompts": [
             "Who dies in the fight?",
-            "Where do you fi ght it?"
+            "Where do you fight it?"
         ],
         "random_prompts": [
             RandomPrompt("Why do you confront this beast?", [

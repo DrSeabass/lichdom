@@ -176,7 +176,7 @@ a deadly sorcerous duel with another mage.""",
 and the queen."""]
             ),
             RandomPrompt(
-                "Where do you fi ght?",
+                "Where do you fight?",
                 [
                     """In the steps of the Library of Tanelorn, where the history of ages past is recorded in
 languages lost to time by inhuman hands.""",
