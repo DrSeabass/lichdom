@@ -11,8 +11,9 @@ I'm hoping this improves some things I found frustrating about the player experi
 # TODOs
 * Don't prompt for hand display with 0 cards
 * Don't prompt for influence selection with 0 cards
+* Don't allow spend resolve when spending resolve would kill you
 * Print the correct scheme or scry depending on card theme
-* Don't offer reroll on 3 doom or more
+* Don't offer doom re-roll on 3 doom or more
 * Clean up text display
 * Add saving & loading of game state so sessions are resumable
 * Add ability to flush text prompts into some archival format
