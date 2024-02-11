@@ -31,7 +31,7 @@ class Adversity(Card):
                 to_use.append(possible_influence[index])
             return to_use
         except:
-            self.choose_influences(possible_influence)
+            return self.choose_influences(possible_influence)
 
     def compute_modifiers(self, hand):
         modifiers = 0
