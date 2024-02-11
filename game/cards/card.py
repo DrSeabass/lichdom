@@ -57,9 +57,9 @@ class Suit(Enum):
 
 class CardType(Enum):
     EVENT = 0
-    SCHEME_SCRY = 1  # TODO: Probably need to break this up
+    SCHEME_SCRY = 1
     ADVERSITY = 2
-    PLOTS_CURSES = 3  # TODO: Probably need to break this up
+    PLOTS_CURSES = 3
     COMPANION = 4
     INFLUENCE = 5
     CATASTROPHE = 6

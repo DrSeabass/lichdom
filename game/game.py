@@ -64,8 +64,6 @@ class Game:
         # if the player has a scrying / scheming card, they may scry, prompt them
         # otherwise, force the draw step
 
-        # TODO: It's technically possible for the player to finish the deck, leaving the only action as attempt lichdom
-
         truth_count = 0
         prompts = [
             UserPrompt(UserPromptBase.DRAW),
@@ -98,7 +96,7 @@ class Game:
             return self.prompt_user(prompt_actions)
 
     def draw(self):
-        if len(self.deck) == 0:  # TODO: This is not technically true.
+        if len(self.deck) == 0:
             raise ValueError("You can't deck yourself in this game; should always have 4 catastrophe cards")
         next_card = self.deck.draw()
         print("Drew to {}".format(next_card))
