@@ -111,6 +111,8 @@ class Adversity(Card):
             else:
                 player.increase_doom()
                 self.take_actions(player, deck)
+        else:
+            player.increase_resolve()
         for card in spent_influence:
             player.hand.remove(card)
         for card in to_resolve:
