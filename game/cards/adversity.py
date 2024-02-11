@@ -72,12 +72,13 @@ class Adversity(Card):
             print("Your preparations allow you to overcome the challenge with ease.")
             return True
         else:
+            # TODO: Capture rolls, individual modifiers to show to player
             roll = random.randint(1, 6) + random.randint(1, 6)
             if (roll + modifiers) >= target:
                 print("You successfully navigate the difficulty.")
                 return True
             else:
-                print("You fail to navigate the difficulty ({} < {})".format(roll, target))
+                print("You fail to navigate the difficulty ({} < {})".format(roll + modifiers, target))
                 return False
 
     def offer_retry(self, player):
