@@ -51,7 +51,7 @@ class Player:
         return self.game_over()
 
     def player_state_str(self):
-        return "{} of {}resolve, {} doom".format(self.resolve, MAX_RESOLVE - self.doom, self.doom)
+        return "{} of {} resolve, {} doom".format(self.resolve, MAX_RESOLVE - self.doom, self.doom)
 
 
     @staticmethod
@@ -83,10 +83,10 @@ class Player:
                 case _:
                     raise ValueError("Player had unexpected card in their hand: {}".format(card))
         player_repr_str = ""
-        player_repr_str += Player.sorted_hand_segment_str("truths", truths)
-        player_repr_str += Player.sorted_hand_segment_str("influences", influences)
-        player_repr_str += Player.sorted_hand_segment_str("companions", companions)
-        player_repr_str += Player.sorted_hand_segment_str("plots", plots)
+        player_repr_str += Player.sorted_hand_segment_str("truths", truths) + "\n"
+        player_repr_str += Player.sorted_hand_segment_str("influences", influences) + "\n"
+        player_repr_str += Player.sorted_hand_segment_str("companions", companions) + "\n"
+        player_repr_str += Player.sorted_hand_segment_str("plots", plots) + "\n"
         player_repr_str += Player.sorted_hand_segment_str("schemes and scrying", scheme_scrys)
         return player_repr_str
 
