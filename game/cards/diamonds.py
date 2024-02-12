@@ -109,9 +109,9 @@ the pain of your common enemies, you decide to employ your dark arts to end a dy
             RandomPrompt("How do you curse their enemies with foul sorcery?",
                          [
                              """A disease that rots the mind and turns them mad with agony.
-                             Death is their only escape to their personal hell.""",
+Death is their only escape to their personal hell.""",
                              """A curse on their family. All descendants die horribly before adulthood and
-                             the continuity of their noble line is at dire risk.""",
+the continuity of their noble line is at dire risk.""",
                              """Their lands dry to ash and financial ruin shatters their long legacy."""])
         ]
     },
