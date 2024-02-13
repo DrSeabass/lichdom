@@ -66,7 +66,7 @@ class Adversity(Card):
                     print("An earlier plot or curse influences the trial")
                     modifiers.append(2)
                     to_resolve.append(card)
-            elif card.cardType == CardType.INFLUENCE:
+            if card.cardType == CardType.INFLUENCE:
                 possible_influence.append(card)
         return modifiers, to_resolve, possible_influence
 
