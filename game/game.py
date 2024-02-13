@@ -175,7 +175,7 @@ them all while learning the most corrupting secrets of the void beyond reality. 
             case TerminalCondition.LOST_RESOLVE:
                 print("Placeholder lost resolve string")
             case TerminalCondition.FAILED_LICHDOM:
-                print("Placeholder lost resolve string")
+                print("Placeholder failed lichdom string")
             case TerminalCondition.LICHDOM:
                 print("Placeholder lichdom string")
             case TerminalCondition.GODHOOD:
