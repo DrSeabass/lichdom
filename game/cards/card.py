@@ -206,7 +206,15 @@ class Card:
         self.random_prompt_sets: list = slug["random_prompts"]
 
     def __str__(self):
-        return "{} {}, {} {}".format(self.value, self.suit, self.theme, self.cardType)
+        match self.cardType:
+            case CardType.SCHEME_SCRY:
+                noun = "Scheme" if self.theme == Theme.MUNDANE else "Scrying"
+                return "{} {}, {} {}".format(self.value, self.suit, self.theme, noun)
+            case CardType.PLOTS_CURSES:
+                noun = "Plot" if self.theme == Theme.MUNDANE else "Curse"
+                return "{} {}, {} {}".format(self.value, self.suit, self.theme, noun)
+            case _:
+                return "{} {}, {} {}".format(self.value, self.suit, self.theme, self.cardType)
 
     def copy(self):
         return deepcopy(self)

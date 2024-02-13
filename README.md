@@ -10,7 +10,6 @@ I'm hoping this improves some things I found frustrating about the player experi
 
 # TODOs
 * Allow for a compelled selection to require user input
-* Print the correct scheme or scry depending on card theme
 * Clean up text display
 * Add saving & loading of game state so sessions are resumable
 * Add ability to flush text prompts into some archival format
