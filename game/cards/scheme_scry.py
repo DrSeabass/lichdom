@@ -38,6 +38,7 @@ class SchemeScry(Card):
     def __init__(self, suit: Suit, value: FaceValue, slug={}):
         super().__init__(suit, value, slug)
 
+    # TODO: Pull this into action.py
     def prompt_user_scheme_scry(self, uncertain, certain):
         print("Replace one of these cards:")
         for index, card in enumerate(certain):
