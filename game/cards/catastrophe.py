@@ -50,6 +50,7 @@ class Catastrophe(Card):
         sacrifice = select_from_prompts(sacrifices)
         if sacrifice.type == SacrificeType.SOMEONE:
             print("You sacrificed a companion ({}) to avoid catastrophe!".format(sacrifice))
+            player.hand.remove(sacrifice.card)
         else:
             player.decrease_resolve()
             player.increase_doom()
