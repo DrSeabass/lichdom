@@ -48,6 +48,8 @@ def select_from_prompts(prompt_actions: list):
 
 
 def multiselect_from_prompts(prompt_actions: list, prompt_str):
+    if len(prompt_actions) == 0:
+        return [] # Return compelled selection
     for index, action in enumerate(prompt_actions):
         print("{}: {}".format(index, action))
     print(prompt_str)
