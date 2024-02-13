@@ -35,20 +35,20 @@ class Adversity(Card):
             return self.choose_influences(possible_influence)
 
     def compute_modifiers(self, hand):
-        modifiers = 0
+        modifiers = []
         to_resolve = []
         possible_influence = []
         for card in hand:
             if card.theme == self.theme:
                 if card.cardType == CardType.TRUTH:
                     print("Knowledge of a truth provides you an advantage in this trial.")
-                    modifiers += 1
+                    modifiers.append(1)
                 elif card.cardType == CardType.COMPANION:
                     print("One of your companions aids you in this trial")
-                    modifiers += 1
+                    modifiers.append(1)
                 elif card.cardType == CardType.PLOTS_CURSES:
                     print("An earlier plot or curse influences the trial")
-                    modifiers -= 2
+                    modifiers.append(2)
                     to_resolve.append(card)
             elif card.cardType == CardType.INFLUENCE:
                 possible_influence.append(card)
@@ -68,19 +68,31 @@ class Adversity(Card):
         return influence_modifier
 
     @staticmethod
-    def check_target(target, modifiers):
-        if (target - modifiers) <= 2:
-            print("Your preparations allow you to overcome the challenge with ease.")
-            return True
+    def check_target(target: int, modifiers: list):
+        disp_string = ""
+        ret_val = False
+        if (target - sum(modifiers)) <= 2:
+            disp_string = "Your preparations allow you to overcome the challenge with ease."
+            ret_val = True
         else:
             # TODO: Capture rolls, individual modifiers to show to player
-            roll = random.randint(1, 6) + random.randint(1, 6)
-            if (roll + modifiers) >= target:
-                print("You successfully navigate the difficulty.")
-                return True
+            rolls = []
+            rolls.append(random.randint(1,6))
+            rolls.append(random.randint(1, 6))
+            if (sum(rolls) + sum(modifiers)) >= target:
+                disp_string = "You successfully navigate the difficulty. {} <".format(target)
+                for value in rolls + modifiers:
+                    disp_string = "{} {} +".format(disp_string, value)
+                disp_string = disp_string[:-1]
+                ret_val = True
             else:
-                print("You fail to navigate the difficulty ({} < {})".format(roll + modifiers, target))
-                return False
+                disp_string = "You fail to navigate the difficulty. {} >=".format(target)
+                for value in rolls + modifiers:
+                    disp_string = "{} {} +".format(disp_string, value)
+                disp_string = disp_string[:-1]
+                ret_val = False
+        print(disp_string)
+        return ret_val
 
     def offer_retry(self, player):
         if player.resolve <= 1:
@@ -105,7 +117,7 @@ class Adversity(Card):
     def take_actions(self, player, deck):
         modifiers, to_resolve, possible_influence = self.compute_modifiers(player.hand)
         spent_influence = self.choose_influences(possible_influence)
-        modifiers += self.use_influence(spent_influence)
+        modifiers.append(self.use_influence(spent_influence))
         target = self.get_threshold()
         success = Adversity.check_target(target, modifiers)
         if not success:
