@@ -50,10 +50,9 @@ class Game:
         # otherwise, force the draw step
 
         truth_count = 0
-        prompts = [
-            UserPrompt(UserPromptBase.DRAW),
-            UserPrompt(UserPromptBase.DISPLAY_PLAYER_HAND)
-        ]
+        prompts = [ UserPrompt(UserPromptBase.DRAW) ]
+        if len(self.player.hand) > 0:
+            prompts.append(UserPrompt(UserPromptBase.DISPLAY_PLAYER_HAND))
         for card in self.player.hand:
             if card.cardType == CardType.TRUTH:
                 truth_count += 1
