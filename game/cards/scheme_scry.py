@@ -1,7 +1,7 @@
 from enum import Enum
 import random
 from game.cards.card import Card, CardType, FaceValue, Suit
-from game.action import select_from_prompts
+from game.action import select_from_prompts, select_one_from_two
 
 
 class PaymentType(Enum):
@@ -38,33 +38,6 @@ class SchemeScry(Card):
     def __init__(self, suit: Suit, value: FaceValue, slug={}):
         super().__init__(suit, value, slug)
 
-    # TODO: Pull this into action.py
-    def prompt_user_scheme_scry(self, uncertain, certain):
-        print("Replace one of these cards:")
-        for index, card in enumerate(certain):
-            print("{}: {}".format(index, card))
-        print("With one of these cards:")
-        for index, card in enumerate(uncertain):
-            print("{}: {}".format(index, card))
-        user_input = input("Your Selections (in the format number, number)")
-        try:
-            selections = user_input.split(',')
-            removed_index = int(selections[0])
-            replaced_index = int(selections[1])
-            if 0 < removed_index >= len(certain):
-                print("Certain card to remove index is illegal, try again")
-                return self.prompt_user_scheme_scry(uncertain, certain)
-            if 0 < replaced_index >= len(uncertain):
-                print("Uncertain card to select index is illegal, try again")
-                return self.prompt_user_scheme_scry(uncertain, certain)
-            swap = certain[removed_index]
-            certain[removed_index] = uncertain[replaced_index]
-            uncertain[replaced_index] = swap
-            return uncertain, certain
-        except:
-            print("Couldn't understand your selections.  Please try again.")
-            return self.prompt_user_scheme_scry(uncertain, certain)
-
     def scheme_scry(self, deck):
         rolls = [random.randint(1, 6), random.randint(1, 6)]
         rolls.sort()
@@ -72,7 +45,15 @@ class SchemeScry(Card):
         uncertain_count = rolls[1]
         certain_future = deck.draw_many(certain_count)
         uncertain_future = deck.draw_many(uncertain_count)
-        uncertain_future, certain_future = self.prompt_user_scheme_scry(uncertain_future, certain_future)
+        swap_index_1, swap_index_2 = select_one_from_two(
+            certain_future,
+            uncertain_future,
+            "Replace one of these cards:",
+            "With one of these cards:"
+        )
+        place_holder = certain_future[swap_index_1]
+        certain_future[swap_index_1] = uncertain_future[swap_index_2]
+        uncertain_future[swap_index_2] = place_holder
         deck.push_many(uncertain_future)
         deck.shuffle()
         random.shuffle(certain_future)

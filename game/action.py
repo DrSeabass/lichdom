@@ -65,3 +65,27 @@ def multiselect_from_prompts(prompt_actions: list, prompt_str):
         return to_use
     except:
         return multiselect_from_prompts(prompt_actions, prompt_str)
+
+
+def select_one_from_two(first_set, second_set, first_string, second_string):
+    print(first_string)
+    for index, card in enumerate(first_set):
+        print("{}: {}".format(index, card))
+    print(second_string)
+    for index, card in enumerate(second_set):
+        print("{}: {}".format(index, card))
+    user_input = input("Your Selections (in the format number, number)")
+    try:
+        selections = user_input.split(',')
+        removed_index = int(selections[0])
+        replaced_index = int(selections[1])
+        if 0 < removed_index >= len(first_set):
+            print("First selected index is illegal, try again")
+            return select_one_from_two(second_set, first_set, first_string, second_string)
+        if 0 < replaced_index >= len(second_set):
+            print("Second selected index is illegal, try again")
+            return select_one_from_two(second_set, first_set, first_string, second_string)
+        return removed_index, replaced_index
+    except:
+        print("Couldn't understand your selections.  Please try again.")
+        return select_one_from_two(second_set, first_set, first_string, second_string)
