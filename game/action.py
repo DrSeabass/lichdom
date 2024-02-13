@@ -26,7 +26,12 @@ class UserPrompt:
             case UserPromptBase.SCHEME_SCRY:
                 return str(self.card)
 
+
 def select_from_prompts(prompt_actions: list):
+    if len(prompt_actions) == 1:
+        return prompt_actions[0] # Return the compelled action
+    elif len(prompt_actions) == 0:
+        raise ValueError("Can't select an action from the empty list.")
     for index, action in enumerate(prompt_actions):
         print("{}: {}".format(index, action))
     user_input = input("Choose an action (by inputting the number): ")
@@ -40,3 +45,21 @@ def select_from_prompts(prompt_actions: list):
     except ValueError:
         print("{} was a bad selection.".format(user_input))
         return select_from_prompts(prompt_actions)
+
+
+def multiselect_from_prompts(prompt_actions: list, prompt_str):
+    for index, action in enumerate(prompt_actions):
+        print("{}: {}".format(index, action))
+    print(prompt_str)
+    print("Respond with comma separated numbers, such as 1,3,5")
+    response = input()
+    if response == "":
+        return []
+    try:
+        to_use = []
+        indexes = set(map(lambda x: int(x), response.split(",")))
+        for index in indexes:
+            to_use.append(prompt_actions[index])
+        return to_use
+    except:
+        return multiselect_from_prompts(prompt_actions, prompt_str)

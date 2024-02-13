@@ -1,7 +1,7 @@
 from enum import Enum
 import random
 from game.cards.card import Card, Suit, FaceValue, CardType
-from game.action import select_from_prompts
+from game.action import select_from_prompts, multiselect_from_prompts
 
 class RetryActions(Enum):
     RETRY = 0
@@ -33,22 +33,6 @@ class Adversity(Card):
                 return 9
             case _:
                 raise ValueError("Created adversity card with invalid face value {}.".format(self.value))
-
-    def choose_influences(self, possible_influence):
-        for index, card in enumerate(possible_influence):
-            print("{}: {}".format(index, card))
-        print("Select which influences to use, remembering this task is {}.".format(self.theme))
-        print("Respond with comma separated numbers, as in 1, 2, 3")
-        response = input()
-        if response == "":
-            return []
-        try:
-            to_use = []
-            for index in map(lambda x: int(x), response.split(",")):
-                to_use.append(possible_influence[index])
-            return to_use
-        except:
-            return self.choose_influences(possible_influence)
 
     def compute_modifiers(self, hand):
         modifiers = []
@@ -120,7 +104,9 @@ class Adversity(Card):
 
     def take_actions(self, player, deck):
         modifiers, to_resolve, possible_influence = self.compute_modifiers(player.hand)
-        spent_influence = self.choose_influences(possible_influence)
+        spent_influence = multiselect_from_prompts(
+            possible_influence,
+            "Select which influences to use, remembering this task is {}.".format(self.theme))
         modifiers.append(self.use_influence(spent_influence))
         target = self.get_threshold()
         success = Adversity.check_target(target, modifiers)
