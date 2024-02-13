@@ -1,42 +1,55 @@
+from enum import Enum
+
+import game.player
 from game.cards.card import Card, CardType, FaceValue, Suit
+from game.action import select_from_prompts
+
+
+class SacrificeType(Enum):
+    NOONE = 0,
+    SOMEONE = 1
+
+    def __str__(self):
+        match self:
+            case SacrificeType.NOONE:
+                return "Sacrifice no one"
+            case SacrificeType.SOMEONE:
+                return "Sacrifice"
+
+
+class Sacrifice:
+    def __init__(self, card=None):
+        if card is not None:
+            self.type = SacrificeType.SOMEONE
+            self.card = card
+        else:
+            self.type = SacrificeType.NOONE
+            self.card = None
+
+    def __str__(self):
+        disp_str = "{}".format(self.type)
+        if self.card is not None:
+            disp_str = "{} {}".format(disp_str, self.card)
+        return disp_str
+
 
 class Catastrophe(Card):
     def __init__(self, suit: Suit, value: FaceValue, slug={}):
         super().__init__(suit, value, slug)
 
-    def get_companions(self, player):
-        available_companions = []
+    @staticmethod
+    def get_sacrifices(player : game.player.Player):
+        available_companions = [Sacrifice()]
         for card in player.hand:
             if card.cardType == CardType.COMPANION:
-                available_companions.append(card)
+                available_companions.append(Sacrifice(card))
         return available_companions
 
-    def offer_sacrifice(self, options):
-        for index, card in enumerate(options):
-            print("{}: {}".format(index, card))
-        print("Would you like to sacrifice a companion to avoid catastrophe?")
-        print("Select a number to sacrifice, or press return to preserve your companions.")
-        response = input()
-        if response == "":
-            return None
-        else:
-            try:
-                index = int(response)
-                return options[index]
-            except:
-                print("I didn't understand. Trying again...")
-                return self.offer_sacrifice(options)
-
-    def take_actions(self, player, deck):
-        sacrifices = self.get_companions(player)
-        if len(sacrifices) > 0:
-            sacrifice = self.offer_sacrifice(sacrifices)
-            if sacrifice is not None:
-                player.hand.remove(sacrifice)
-                print("You sacrificed a companion ({}) to avoid catastrophe!".format(sacrifice))
-            else:
-                player.decrease_resolve()
-                player.increase_doom()
+    def take_actions(self, player: game.player.Player, deck: list):
+        sacrifices = self.get_sacrifices(player)
+        sacrifice = select_from_prompts(sacrifices)
+        if sacrifice.type == SacrificeType.SOMEONE:
+            print("You sacrificed a companion ({}) to avoid catastrophe!".format(sacrifice))
         else:
             player.decrease_resolve()
             player.increase_doom()
