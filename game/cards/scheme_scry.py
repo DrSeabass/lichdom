@@ -1,6 +1,7 @@
 from enum import Enum
 import random
 from game.cards.card import Card, CardType, FaceValue, Suit
+from game.action import select_from_prompts
 
 
 class PaymentType(Enum):
@@ -88,20 +89,9 @@ class SchemeScry(Card):
                     options.append(Payment(PaymentType.CARD, card))
         return options
 
-    def prompt_user_cost(self, options):
-        for index, option in enumerate(options):
-            print("{}: {}".format(index, option))
-        print("How will you pay for the scrying? (Pick a number)")
-        response = input()
-        try:
-            index = int(response)
-            return options[index]
-        except:
-            return self.prompt_user_cost(options)
-
     def take_actions(self, player, deck):
         options = self.find_possible_payment(player)
-        payment = self.prompt_user_cost(options)
+        payment = select_from_prompts(options)
         match payment.type:
             case PaymentType.DOOM:
                 player.increase_doom()
