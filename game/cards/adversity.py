@@ -1,5 +1,21 @@
+from enum import Enum
 import random
 from game.cards.card import Card, Suit, FaceValue, CardType
+from game.action import select_from_prompts
+
+class RetryActions(Enum):
+    RETRY = 0
+    ACCEPT = 1
+    FAIL = 2
+
+    def __str__(self):
+        match self:
+            case RetryActions.RETRY:
+                return "Use your corrupting powers and try again."
+            case RetryActions.ACCEPT:
+                return "Accept defeat and continue on."
+            case RetryActions.FAIL:
+                return "Compelled Failure"
 
 
 class Adversity(Card):
@@ -94,25 +110,13 @@ class Adversity(Card):
         print(disp_string)
         return ret_val
 
-    def offer_retry(self, player):
-        if player.resolve <= 1:
-            return False
+    def offer_retry(self, player) -> object:
+        if player.resolve <= 1 and player.doom >= 3:
+            return RetryActions.FAIL # Can't succeed
+        elif player.doom < 3 and player.resolve == 1:
+            return  RetryActions.RETRY # Retry Compelled
         else:
-            print("1. Use your corrupting powers and try again.")
-            print("2. Accept defeat and continue on.")
-            response = input()
-            try:
-                selection = int(response)
-                if selection == 1:
-                    return True
-                elif selection == 2:
-                    return False
-                else:
-                    print("Got invalid user input: {}".format(response))
-                    return self.offer_retry(player)
-            except:
-                print("Got invalid user input: {}".format(response))
-                return self.offer_retry(player)
+            return select_from_prompts([RetryActions.RETRY, RetryActions.ACCEPT])
 
     def take_actions(self, player, deck):
         modifiers, to_resolve, possible_influence = self.compute_modifiers(player.hand)
@@ -121,12 +125,19 @@ class Adversity(Card):
         target = self.get_threshold()
         success = Adversity.check_target(target, modifiers)
         if not success:
-            retry = self.offer_retry(player)
-            if not retry:
-                player.decrease_resolve()
-            else:
-                player.increase_doom()
-                self.take_actions(player, deck)
+            user_selection = self.offer_retry(player)
+            print("User selected {}".format(user_selection))
+            match user_selection:
+                case RetryActions.ACCEPT:
+                    player.decrease_resolve()
+                case RetryActions.FAIL:
+                    player.decrease_resolve()
+                case RetryActions.RETRY:
+                    print("Trying again...")
+                    player.increase_doom()
+                    self.take_actions(player, deck)
+                case _:
+                    raise ValueError("Should have hit one of the above cases")
         else:
             player.increase_resolve()
         for card in spent_influence:

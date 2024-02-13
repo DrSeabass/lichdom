@@ -4,13 +4,8 @@ import random
 from game.cards.card import Card, Theme, CardType
 from game.cards.deck import Deck
 from game.player import Player
+from game.action import UserPrompt, UserPromptBase, select_from_prompts
 
-
-class UserPromptBase(Enum):
-    DRAW = 0
-    DISPLAY_PLAYER_HAND = 1
-    ATTEMPT_LICHDOM = 2
-    SCHEME_SCRY = 3
 
 # TODO: Hang game end string off of a terminal node for the state machine, consolidating where output happens
 class TerminalCondition(Enum):
@@ -20,24 +15,6 @@ class TerminalCondition(Enum):
     LICHDOM = 3
     GODHOOD = 4
     NOT_TERMINAL = 5
-
-class UserPrompt:
-
-    def __init__(self, base, card=None):
-        self.base_prompt = base
-        if card is not None:
-            self.card = card
-
-    def __str__(self):
-        match self.base_prompt:
-            case UserPromptBase.DRAW:
-                return "Draw a Card"
-            case UserPromptBase.DISPLAY_PLAYER_HAND:
-                return "Show Player Hand"
-            case UserPromptBase.ATTEMPT_LICHDOM:
-                return "Attempt the Lichdom Ritual"
-            case UserPromptBase.SCHEME_SCRY:
-                return str(self.card)
 
 
 class DrawStepResultBase(Enum):
@@ -89,19 +66,7 @@ class Game:
 
     def prompt_user(self, prompt_actions):
         print(self.player.player_state_str())
-        for index, action in enumerate(prompt_actions):
-            print("{}: {}".format(index, action))
-        user_input = input("Choose an action (by inputting the number): ")
-        try:
-            selected_index = int(user_input)
-            if 0 <= selected_index < len(prompt_actions):
-                return selected_index
-            else:
-                print("{} was a bad selection.".format(user_input))
-                return self.prompt_user(prompt_actions)
-        except ValueError:
-            print("{} was a bad selection.".format(user_input))
-            return self.prompt_user(prompt_actions)
+        return select_from_prompts(prompt_actions)
 
     def draw(self):
         if len(self.deck) == 0:
@@ -186,8 +151,7 @@ them all while learning the most corrupting secrets of the void beyond reality. 
 
     def step(self):
         possible_actions = self.get_step_actions()
-        selected_action_index = self.prompt_user(possible_actions)
-        selected_action = possible_actions[selected_action_index]
+        selected_action = self.prompt_user(possible_actions)
         match selected_action.base_prompt:
             case UserPromptBase.DRAW:
                 drawn_card = self.draw()
