@@ -5,36 +5,30 @@ import unittest
 
 
 class Theme(Enum):
-    MUNDANE = 0
-    ARCANE = 1
+    Mundane = 0
+    Arcane = 1
 
     def __str__(self):
-        match self:
-            case Theme.MUNDANE:
-                return "Mundane"
-            case Theme.ARCANE:
-                return "Arcane"
-            case _:
-                raise TypeError("Unexpected value {}".format(self))
+        return self.name
 
 
 class Suit(Enum):
-    SPADES = 0
-    CLUBS = 1
-    HEARTS = 2
-    DIAMONDS = 3
+    Spades = 0
+    Clubs = 1
+    Hearts = 2
+    Diamonds = 3
 
     @staticmethod
     def get_suit_theme(suit):
         match suit:
-            case Suit.SPADES:
-                return Theme.ARCANE
-            case Suit.CLUBS:
-                return Theme.ARCANE
-            case Suit.HEARTS:
-                return Theme.MUNDANE
-            case Suit.DIAMONDS:
-                return Theme.MUNDANE
+            case Suit.Spades:
+                return Theme.Arcane
+            case Suit.Clubs:
+                return Theme.Arcane
+            case Suit.Hearts:
+                return Theme.Mundane
+            case Suit.Diamonds:
+                return Theme.Mundane
             case _:
                 raise TypeError("Unexpected value {}".format(suit))
 
@@ -42,17 +36,7 @@ class Suit(Enum):
         return Suit.get_suit_theme(self)
 
     def __str__(self):
-        match self:
-            case Suit.SPADES:
-                return "of Spades"
-            case Suit.CLUBS:
-                return "of Clubs"
-            case Suit.HEARTS:
-                return "of Hearts"
-            case Suit.DIAMONDS:
-                return "of Diamonds"
-            case _:
-                raise TypeError("Unexpected value {}".format(self))
+        return self.name
 
 
 class CardType(Enum):
@@ -103,7 +87,7 @@ class FaceValue(Enum):
     KING = 13
 
     @staticmethod
-    def get_face_cardtype(fv):
+    def get_face_card_type(fv):
         match fv:
             case FaceValue.ACE:
                 return CardType.TRUTH
@@ -135,7 +119,7 @@ class FaceValue(Enum):
                 raise TypeError("Unexpected value {}".format(fv))
 
     def get_cardtype(self):
-        return FaceValue.get_face_cardtype(self)
+        return FaceValue.get_face_card_type(self)
 
     def __str__(self):
         match self:
@@ -208,13 +192,13 @@ class Card:
     def __str__(self):
         match self.cardType:
             case CardType.SCHEME_SCRY:
-                noun = "Scheme" if self.theme == Theme.MUNDANE else "Scrying"
-                return "{} {}, {} {}".format(self.value, self.suit, self.theme, noun)
+                noun = "Scheme" if self.theme == Theme.Mundane else "Scrying"
+                return "{} of {}, {} {}".format(self.value, self.suit, self.theme, noun)
             case CardType.PLOTS_CURSES:
-                noun = "Plot" if self.theme == Theme.MUNDANE else "Curse"
-                return "{} {}, {} {}".format(self.value, self.suit, self.theme, noun)
+                noun = "Plot" if self.theme == Theme.Mundane else "Curse"
+                return "{} of {}, {} {}".format(self.value, self.suit, self.theme, noun)
             case _:
-                return "{} {}, {} {}".format(self.value, self.suit, self.theme, self.cardType)
+                return "{} of {}, {} {}".format(self.value, self.suit, self.theme, self.cardType)
 
     def copy(self):
         return deepcopy(self)
@@ -240,27 +224,27 @@ class Card:
 
 class TestCard(unittest.TestCase):
     def test_not_same_memory(self):
-        card1 = Card(Suit.SPADES, FaceValue.ACE)
-        card2 = Card(Suit.SPADES, FaceValue.ACE)
+        card1 = Card(Suit.Spades, FaceValue.ACE)
+        card2 = Card(Suit.Spades, FaceValue.ACE)
         self.assertTrue(card1 == card2)
         self.assertFalse(id(card1) == id(card2))
 
     def test_same_memory(self):
-        card1 = Card(Suit.SPADES, FaceValue.ACE)
+        card1 = Card(Suit.Spades, FaceValue.ACE)
         self.assertTrue(card1 == card1)
         self.assertTrue(id(card1) == id(card1))
 
     def test_not_same(self):
-        card1 = Card(Suit.SPADES, FaceValue.ACE)
-        card2 = Card(Suit.CLUBS, FaceValue.ACE)
+        card1 = Card(Suit.Spades, FaceValue.ACE)
+        card2 = Card(Suit.Clubs, FaceValue.ACE)
         self.assertFalse(card1 == card2)
         self.assertFalse(id(card1) == id(card2))
 
     def test_copy_is_deep(self):
-        card1 = Card(Suit.SPADES, FaceValue.ACE)
+        card1 = Card(Suit.Spades, FaceValue.ACE)
         card2 = card1.copy()
         self.assertTrue(card1 == card2)
-        card1.suit = Suit.HEARTS
+        card1.suit = Suit.Hearts
         self.assertFalse(card1 == card2)
 
 

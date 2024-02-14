@@ -11,13 +11,7 @@ class PlayerStat(Enum):
     Doom = 1
 
     def __str__(self):
-        match self:
-            case PlayerStat.Resolve:
-                return "Resolve"
-            case PlayerStat.Doom:
-                return "Doom"
-            case _:
-                raise ValueError("Got Unknown Value in PlayerStat: {}".format(self))
+        self.name
 
 
 class Player:

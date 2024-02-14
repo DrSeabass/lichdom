@@ -22,6 +22,7 @@ class DrawStepResultBase(Enum):
     CARD = 1
 
 
+
 class DrawStepResult:
 
     def __init__(self, base, card):
@@ -33,6 +34,9 @@ class DrawStepResult:
             return True
         else:
             return False
+        
+    def __str__(self) -> str:
+        return "{}: {}".format(self.base, self.card)
 
 
 class Game:
@@ -74,8 +78,8 @@ class Game:
         print("Drew to {}".format(next_card))
         if (
                 self.previous_card is not None
-                and self.previous_card.theme == Theme.ARCANE
-                and next_card.theme == Theme.ARCANE
+                and self.previous_card.theme == Theme.Arcane
+                and next_card.theme == Theme.Arcane
                 and next_card.cardType == CardType.CATASTROPHE
                 and self.previous_card.cardType == CardType.CATASTROPHE
         ):

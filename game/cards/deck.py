@@ -11,10 +11,10 @@ import random
 import unittest
 
 SLUGS = {
-    Suit.HEARTS : hearts.card_slugs,
-    Suit.DIAMONDS : diamonds.card_slugs,
-    Suit.CLUBS : clubs.card_slugs,
-    Suit.SPADES : spades.card_slugs
+    Suit.Hearts : hearts.card_slugs,
+    Suit.Diamonds : diamonds.card_slugs,
+    Suit.Clubs : clubs.card_slugs,
+    Suit.Spades : spades.card_slugs
 }
 
 class Deck:
@@ -23,7 +23,7 @@ class Deck:
         self.cards = []
         for suit in Suit:
             for value in FaceValue:
-                card_type = FaceValue.get_face_cardtype(value)
+                card_type = FaceValue.get_face_card_type(value)
                 slug = SLUGS[suit][value]
                 match card_type:
                     case CardType.CATASTROPHE:
