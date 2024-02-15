@@ -183,3 +183,20 @@ them all while learning the most corrupting secrets of the void beyond reality. 
                 print("Placeholder lichdom string")
             case TerminalCondition.GODHOOD:
                 print("Placeholder godhood string")
+
+    def dehydrate(self):
+        return {
+            "player": self.player.dehydrate(),
+            "deck": self.deck.dehydrate(),
+            "previous_card": self.previous_card.dehydrate() if self.previous_card else None,
+            "terminal": self.terminal.name
+        }
+    
+    @staticmethod
+    def hydrate(data):
+        game = Game()
+        game.player = Player.hydrate(data["player"])
+        game.deck = Deck.hydrate(data["deck"])
+        game.previous_card = Card.hydrate(data["previous_card"]) if data["previous_card"] else None
+        game.terminal = TerminalCondition[data["terminal"]]
+        return game
