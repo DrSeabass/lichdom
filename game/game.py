@@ -47,6 +47,7 @@ class Game:
         self.previous_card: Card = None
         self.terminal = TerminalCondition.NOT_TERMINAL
         self.deck.shuffle()
+        self.previous_state = None
 
     def get_step_actions(self):
         # if the player has 2 truths, they may attempt to ascend to lichdom, prompt them
@@ -54,7 +55,7 @@ class Game:
         # otherwise, force the draw step
 
         truth_count = 0
-        prompts = [ UserPrompt(UserPromptBase.DRAW) ]
+        prompts = [UserPrompt(UserPromptBase.DRAW) ]
         if len(self.player.hand) > 0:
             prompts.append(UserPrompt(UserPromptBase.DISPLAY_PLAYER_HAND))
         for card in self.player.hand:
@@ -65,6 +66,9 @@ class Game:
         if truth_count >= 2:
             prompts.append(UserPrompt(UserPromptBase.ATTEMPT_LICHDOM))
 
+        prompts.append(UserPrompt(UserPromptBase.SAVE))
+        if self.previous_state is not None:
+            prompts.append(UserPrompt(UserPromptBase.LOAD))
         return prompts
 
     def prompt_user(self, prompt_actions):
@@ -168,6 +172,13 @@ them all while learning the most corrupting secrets of the void beyond reality. 
                 selected_action.card.take_actions(self.player, self.deck)
             case UserPromptBase.ATTEMPT_LICHDOM:
                 self.attempt_lichdom()
+            case UserPromptBase.SAVE:
+                self.previous_state = self.dehydrate()
+            case UserPromptBase.LOAD:
+                saved_game = Game.hydrate(self.previous_state)
+                previous_state = self.previous_state
+                self.__dict__ = saved_game.__dict__
+                self.previous_state = previous_state
 
     def play(self):
         while self.terminal == TerminalCondition.NOT_TERMINAL:
