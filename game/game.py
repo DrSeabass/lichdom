@@ -1,5 +1,7 @@
 from enum import Enum
 import random
+import pickle
+import os.path
 
 from game.cards.card import Card, Theme, CardType
 from game.cards.deck import Deck
@@ -48,6 +50,7 @@ class Game:
         self.terminal = TerminalCondition.NOT_TERMINAL
         self.deck.shuffle()
         self.previous_state = None
+        self.save_path = None
 
     def get_step_actions(self):
         # if the player has 2 truths, they may attempt to ascend to lichdom, prompt them
@@ -66,6 +69,7 @@ class Game:
         if truth_count >= 2:
             prompts.append(UserPrompt(UserPromptBase.ATTEMPT_LICHDOM))
 
+        prompts.append(UserPrompt(UserPromptBase.SET_SAVE_LOCATION))
         prompts.append(UserPrompt(UserPromptBase.SAVE))
         if self.previous_state is not None:
             prompts.append(UserPrompt(UserPromptBase.LOAD))
@@ -173,10 +177,30 @@ them all while learning the most corrupting secrets of the void beyond reality. 
             case UserPromptBase.ATTEMPT_LICHDOM:
                 self.attempt_lichdom()
             case UserPromptBase.SAVE:
-                self.previous_state = self.dehydrate()
+                self.save()
             case UserPromptBase.LOAD:
-                saved_game = Game.hydrate(self.previous_state)
-                previous_state = self.previous_state
+                self.load()
+            case UserPromptBase.SET_SAVE_LOCATION:
+                self.save_path = input("Enter the save path: ")
+
+    def save(self):
+        self.previous_state = self.dehydrate()
+        if self.save_path is not None:
+            print("Saving to {}".format(self.save_path))
+            open_flags = "wb"
+            if not os.path.exists(self.save_path):
+                open_flags = "xb"
+            with open(self.save_path, open_flags) as save_file:
+                pickle.dump(self.previous_state, save_file)
+        else:
+            print("No save path set, only saved in memory, not to disk.")
+
+    def load(self):
+        saved_game = Game.hydrate(self.previous_state)
+        if os.path.exists(self.save_path):
+            with open(self.save_path, "rb") as save_file:
+                previous_state = pickle.load(save_file)
+                saved_game = Game.hydrate(previous_state)
                 self.__dict__ = saved_game.__dict__
                 self.previous_state = previous_state
 

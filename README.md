@@ -11,8 +11,7 @@ I'm hoping this improves some things I found frustrating about the player experi
 # TODOs
 * Allow for a compelled selection to require user input
 * Clean up text display
-* Add saving & loading of game state so sessions are resumable
-    * This is in for during play, but I want to flush the state to and from disk as well.
+* Make save game representation human-readable
 * Add ability to flush text prompts into some archival format
 * Implement a proper state machine & command / action pattern for game logic
 

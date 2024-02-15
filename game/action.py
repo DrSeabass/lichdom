@@ -1,5 +1,5 @@
 from enum import Enum
-
+import os.path
 
 class UserPromptBase(Enum):
     DRAW = 0
@@ -8,7 +8,7 @@ class UserPromptBase(Enum):
     SCHEME_SCRY = 3
     SAVE = 4
     LOAD = 5
-
+    SET_SAVE_LOCATION = 6
 
 class UserPrompt:
 
@@ -31,6 +31,8 @@ class UserPrompt:
                 return "Save game state"
             case UserPromptBase.LOAD:
                 return "Load game state"
+            case UserPromptBase.SET_SAVE_LOCATION:
+                return "Set the save location"
 
 
 def select_from_prompts(prompt_actions: list):
@@ -95,3 +97,18 @@ def select_one_from_two(first_set, second_set, first_string, second_string):
     except:
         print("Couldn't understand your selections.  Please try again.")
         return select_one_from_two(second_set, first_set, first_string, second_string)
+    
+def file_path_prompt():
+    print("Please enter the file path for the save file, empty string to abort")
+    possible = input()
+    if possible == "":
+        return None
+    try:
+        possible_dir = os.path.dirname(possible)
+        os.path.create_dir(possible_dir, exist_ok=True)
+        if os.path.exists(possible):
+            print("The file already exists, and will be overwritten on save unless you enter a new name.")
+        return possible
+    except:
+        print("Couldn't create the directory for the file, try again")
+        return file_path_prompt()
