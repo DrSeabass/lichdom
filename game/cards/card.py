@@ -1,7 +1,6 @@
 import random
 from copy import deepcopy
 from enum import Enum
-import unittest
 
 
 class Theme(Enum):
