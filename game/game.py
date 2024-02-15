@@ -87,14 +87,14 @@ class Game:
         return prompts
 
     def prompt_user(self, prompt_actions):
-        print("{}: {}".format(self.game_step, self.player.player_state_str()))
+        Game.display("{}: {}".format(self.game_step, self.player.player_state_str()))
         return select_from_prompts(prompt_actions)
 
     def draw(self):
         if len(self.deck) == 0:
             raise ValueError("You can't deck yourself in this game; should always have 4 catastrophe cards")
         next_card = self.deck.draw()
-        print("Drew to {}".format(next_card))
+        Game.display("Drew to {}".format(next_card))
         if (
                 self.previous_card is not None
                 and self.previous_card.theme == Theme.Arcane
@@ -122,36 +122,36 @@ class Game:
         for _ in range(truths):
             roll = random.randint(1, 6)
             rolls.append(roll)
-        print("Rolled for truths: {}".format(rolls))
+        Game.display("Rolled for truths: {}".format(rolls))
         score += sum(rolls)
-        print("Final Score: {}".format(score))
+        Game.display("Final Score: {}".format(score))
         # TODO: There have to be better places to keep these strings
         if score <= 4:
-            print(
+            Game.display(
                 """You die horribly, your flesh boils and your bones crumble to dust,
 cursing the land where you attempted the foul ritual.""")
             self.terminal = TerminalCondition.FAILED_LICHDOM
         elif 4 < score <= 8:
-            print(
+            Game.display(
                 """You become a wraith, a half ethereal horror beyond the comprehension of other mortals.
 You will inevitably lose your mind and sanity in the many years ahead haunting your lair, becoming only a monster with
 no other ambitions besides consuming human souls. A beast far removed from your goal of power.""")
             self.terminal = TerminalCondition.FAILED_LICHDOM
         elif 8 < score <= 11:
-            print(
+            Game.display(
                 """Your foul ritual partially succeeds, giving you immense power and an extremely long life.
 You will live 12 13 hundreds of years, command armies and establish cults that will outlive you…
 but you are not immortal. Your body will eventually wither and die, everything you built will crumble to dust,
 and your name will be forgotten. You are only mortal after all.""")
             self.terminal = TerminalCondition.FAILED_LICHDOM
         elif 11 < score < 19:
-            print(
+            Game.display(
                 """You made it. Your immortal soul will linger in this world forever, just enough time to discover
 all the secrets of the cosmos. Your body may decay with time, but you will find younger vessels as the ages pass by.
 You are a lich.""")
             self.terminal = TerminalCondition.LICHDOM
         else:
-            print(
+            Game.display(
                 """Time doesn’t have meaning any more. Ages come and go, empires rise and fall, and you stand above
 them all while learning the most corrupting secrets of the void beyond reality. You have become a god""")
             self.terminal = TerminalCondition.GODHOOD
@@ -183,7 +183,7 @@ them all while learning the most corrupting secrets of the void beyond reality. 
                 else:  # Magical Cataclysm
                     self.terminal = TerminalCondition.CATACLYSM
             case UserPromptBase.DISPLAY_PLAYER_HAND:
-                print(self.player.player_hand_str())
+                Game.display(self.player.player_hand_str())
             case UserPromptBase.SCHEME_SCRY:
                 hand_size_before = len(self.player.hand)
                 selected_action.card.take_actions(self.player, self.deck)
@@ -201,14 +201,14 @@ them all while learning the most corrupting secrets of the void beyond reality. 
     def save(self):
         self.previous_state = self.dehydrate()
         if self.save_path is not None:
-            print("Saving to {}".format(self.save_path))
+            Game.display("Saving to {}".format(self.save_path))
             open_flags = "wb"
             if not os.path.exists(self.save_path):
                 open_flags = "xb"
             with open(self.save_path, open_flags) as save_file:
                 pickle.dump(self.previous_state, save_file)
         else:
-            print("No save path set, only saved in memory, not to disk.")
+            Game.display("No save path set, only saved in memory, not to disk.")
 
     def load(self):
         saved_game = Game.hydrate(self.previous_state)
@@ -224,15 +224,15 @@ them all while learning the most corrupting secrets of the void beyond reality. 
             self.step()
         match self.terminal:
             case TerminalCondition.CATACLYSM:
-                print("Placeholder cataclysm string")
+                Game.display("Placeholder cataclysm string")
             case TerminalCondition.LOST_RESOLVE:
-                print("Placeholder lost resolve string")
+                Game.display("Placeholder lost resolve string")
             case TerminalCondition.FAILED_LICHDOM:
-                print("Placeholder failed lichdom string")
+                Game.display("Placeholder failed lichdom string")
             case TerminalCondition.LICHDOM:
-                print("Placeholder lichdom string")
+                Game.display("Placeholder lichdom string")
             case TerminalCondition.GODHOOD:
-                print("Placeholder godhood string")
+                Game.display("Placeholder godhood string")
 
     def dehydrate(self):
         return {
@@ -252,3 +252,9 @@ them all while learning the most corrupting secrets of the void beyond reality. 
         game.terminal = TerminalCondition[data["terminal"]]
         game.game_step = data["game_step"]
         return game
+
+    @staticmethod
+    def display(text, archival=False):
+        print(text)
+        if archival:
+            raise NotImplementedError
