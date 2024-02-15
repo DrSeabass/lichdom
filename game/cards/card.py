@@ -235,13 +235,15 @@ class Card:
         fixed_prompt_strings = ""
         random_prompt_strings = ""
         for prompt in self.fixed_prompts:
-            fixed_prompt_strings = "{}\n* {}".format(fixed_prompt_strings, prompt)
+            fixed_prompt_strings = "{}\n* {}".format(fixed_prompt_strings, prompt.replace("\n", " "))
         for random_prompt in self.random_prompt_sets:
-            this_prompt = "* {}".format(random_prompt.prompt)
-            for response in random_prompt.prompt.responses:
-                this_prompt = "{}\n\t*{}".format(this_prompt, response)
+            this_prompt = "* {}".format(random_prompt.prompt.replace("\n", " "))
+            for response in random_prompt.responses:
+                this_prompt = "{}\n\t* {}".format(this_prompt, response.replace("\n", " "))
+            random_prompt_strings = "{}\n{}".format(random_prompt_strings, this_prompt)
         return """{}
-#Setup
+
+# Setup
 {}
 
 # Fixed Writing Prompts
