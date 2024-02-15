@@ -6,6 +6,8 @@ class UserPromptBase(Enum):
     DISPLAY_PLAYER_HAND = 1
     ATTEMPT_LICHDOM = 2
     SCHEME_SCRY = 3
+    SAVE = 4
+    LOAD = 5
 
 
 class UserPrompt:
@@ -25,6 +27,10 @@ class UserPrompt:
                 return "Attempt the Lichdom Ritual"
             case UserPromptBase.SCHEME_SCRY:
                 return str(self.card)
+            case UserPromptBase.SAVE:
+                return "Save game state"
+            case UserPromptBase.LOAD:
+                return "Load game state"
 
 
 def select_from_prompts(prompt_actions: list):
