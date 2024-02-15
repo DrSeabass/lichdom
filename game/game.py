@@ -6,7 +6,7 @@ import os.path
 from game.cards.card import Card, Theme, CardType
 from game.cards.deck import Deck
 from game.player import Player
-from game.action import UserPrompt, UserPromptBase, select_from_prompts
+from game.action import UserPrompt, UserPromptBase, select_from_prompts, file_path_prompt
 
 
 # TODO: Hang game end string off of a terminal node for the state machine, consolidating where output happens
@@ -36,7 +36,7 @@ class DrawStepResult:
             return True
         else:
             return False
-        
+
     def __str__(self) -> str:
         return "{}: {}".format(self.base, self.card)
 
@@ -188,7 +188,7 @@ them all while learning the most corrupting secrets of the void beyond reality. 
             case UserPromptBase.LOAD:
                 self.load()
             case UserPromptBase.SET_SAVE_LOCATION:
-                self.save_path = input("Enter the save path: ")
+                self.save_path = file_path_prompt()
 
     def save(self):
         self.previous_state = self.dehydrate()
@@ -234,7 +234,7 @@ them all while learning the most corrupting secrets of the void beyond reality. 
             "terminal": self.terminal.name,
             "game_step": self.game_step
         }
-    
+
     @staticmethod
     def hydrate(data):
         game = Game()
