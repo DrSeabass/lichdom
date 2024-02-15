@@ -220,6 +220,16 @@ class Card:
                 and self.suit == card2.suit
                 and self.value == card2.value
         )
+    
+    def dehydrate(self):
+        return {
+            "suit": self.suit.name,
+            "value": self.value.name
+        }
+    
+    @staticmethod
+    def hydrate(data):
+        return Card(Suit[data["suit"]], FaceValue[data["value"]])
 
 
 class TestCard(unittest.TestCase):
@@ -246,6 +256,19 @@ class TestCard(unittest.TestCase):
         self.assertTrue(card1 == card2)
         card1.suit = Suit.Hearts
         self.assertFalse(card1 == card2)
+
+    def test_dehydrate_hydrate(self):
+        for suit in Suit:
+            for value in FaceValue:
+                card = Card(suit, value)
+                data = card.dehydrate()
+                expected = {
+                    "suit": suit.name,
+                    "value": value.name
+                }
+                self.assertEqual(data, expected)
+                rehydrated = Card.hydrate(data)
+                self.assertEqual(card, rehydrated)
 
 
 if __name__ == '__main__':
