@@ -43,12 +43,13 @@ class DrawStepResult:
 
 class Game:
 
-    def __init__(self):
+    def __init__(self, journal_directory=None):
         self.player: Player = Player()
         self.deck: Deck = Deck()
         self.previous_card: Card = None
         self.terminal = TerminalCondition.NOT_TERMINAL
         self.deck.shuffle()
+        self.journal_directory = journal_directory
         self.previous_state = None
         self.save_path = None
         self.game_step = 0

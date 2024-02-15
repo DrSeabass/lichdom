@@ -97,7 +97,7 @@ def select_one_from_two(first_set, second_set, first_string, second_string):
     except:
         print("Couldn't understand your selections.  Please try again.")
         return select_one_from_two(second_set, first_set, first_string, second_string)
-    
+
 def file_path_prompt():
     print("Please enter the file path for the save file, empty string to abort")
     possible = input()
@@ -112,3 +112,23 @@ def file_path_prompt():
     except:
         print("Couldn't create the directory for the file, try again")
         return file_path_prompt()
+
+def directory_path_prompt():
+    print("Please enter the directory to store the journal or the empty string to not set a directory")
+    possible = input()
+    if possible == "":
+        return None
+    dirname, ext = os.path.splitext(possible)
+    if ext != "":
+        print("That's not a directory, try again")
+        return directory_path_prompt()
+    if os.path.dirname(dirname):
+        try:
+            os.path.create_dir(dirname, exist_ok=True)
+            return dirname
+        except:
+            print("Couldn't create the directory, try again")
+            return directory_path_prompt()
+    else:
+        print("That's not a directory, try again")
+        return directory_path_prompt()
