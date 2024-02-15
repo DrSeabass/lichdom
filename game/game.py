@@ -43,6 +43,10 @@ class DrawStepResult:
 
 class Game:
 
+    @staticmethod
+    def get_save_location_from_journal_dir(dirname):
+        return os.path.join([dirname, "game_state.sav"])
+
     def __init__(self, journal_directory=None):
         self.player: Player = Player()
         self.deck: Deck = Deck()
@@ -50,9 +54,15 @@ class Game:
         self.terminal = TerminalCondition.NOT_TERMINAL
         self.deck.shuffle()
         self.journal_directory = journal_directory
-        self.previous_state = None
-        self.save_path = None
-        self.game_step = 0
+        if journal_directory is None:
+            self.save_path = None
+        else:
+            self.save_path = Game.get_save_location_from_journal_dir(self.journal_directory)
+        self.game_step = 1
+        if self.save_path is not None:
+            self.load()
+        else:
+            self.save()
 
     def get_step_actions(self):
         # if the player has 2 truths, they may attempt to ascend to lichdom, prompt them
@@ -71,7 +81,6 @@ class Game:
         if truth_count >= 2:
             prompts.append(UserPrompt(UserPromptBase.ATTEMPT_LICHDOM))
 
-        prompts.append(UserPrompt(UserPromptBase.SET_SAVE_LOCATION))
         prompts.append(UserPrompt(UserPromptBase.SAVE))
         if self.previous_state is not None:
             prompts.append(UserPrompt(UserPromptBase.LOAD))
@@ -188,8 +197,6 @@ them all while learning the most corrupting secrets of the void beyond reality. 
                 self.save()
             case UserPromptBase.LOAD:
                 self.load()
-            case UserPromptBase.SET_SAVE_LOCATION:
-                self.save_path = file_path_prompt()
 
     def save(self):
         self.previous_state = self.dehydrate()

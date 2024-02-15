@@ -8,7 +8,6 @@ class UserPromptBase(Enum):
     SCHEME_SCRY = 3
     SAVE = 4
     LOAD = 5
-    SET_SAVE_LOCATION = 6
 
 class UserPrompt:
 
@@ -31,8 +30,6 @@ class UserPrompt:
                 return "Save game state"
             case UserPromptBase.LOAD:
                 return "Load game state"
-            case UserPromptBase.SET_SAVE_LOCATION:
-                return "Set the save location"
 
 
 def select_from_prompts(prompt_actions: list):
