@@ -1,6 +1,6 @@
 from enum import Enum
 import unittest
-from game.cards.card import CardType
+from game.cards.card import CardType, Card
 
 MAX_RESOLVE = 4
 MIN_RESOLVE = 0
@@ -83,6 +83,23 @@ class Player:
         player_repr_str += Player.sorted_hand_segment_str("plots", plots) + "\n"
         player_repr_str += Player.sorted_hand_segment_str("schemes and scrying", scheme_scrys)
         return player_repr_str
+    
+    def dehydrate(self):
+        return {
+            "resolve": self.resolve,
+            "doom": self.doom,
+            "marks_of_corruption": self.marks_of_corruption,
+            "hand": [ card.dehydrate() for card in self.hand ]
+        }
+    
+    @staticmethod
+    def hydrate(data):
+        player = Player()
+        player.resolve = data["resolve"]
+        player.doom = data["doom"]
+        player.marks_of_corruption = data["marks_of_corruption"]
+        player.hand = [ Card.hydrate(card_data) for card_data in data["hand"] ]
+        return player
 
 
 class PlayerTests(unittest.TestCase):
