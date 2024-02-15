@@ -220,16 +220,36 @@ class Card:
                 and self.suit == card2.suit
                 and self.value == card2.value
         )
-    
+
     def dehydrate(self):
         return {
             "suit": self.suit.name,
             "value": self.value.name
         }
-    
+
     @staticmethod
     def hydrate(data):
         return Card(Suit[data["suit"]], FaceValue[data["value"]])
+
+    def obsidian_string(self):
+        fixed_prompt_strings = ""
+        random_prompt_strings = ""
+        for prompt in self.fixed_prompts:
+            fixed_prompt_strings = "{}\n* {}".format(fixed_prompt_strings, prompt)
+        for random_prompt in self.random_prompt_sets:
+            this_prompt = "* {}".format(random_prompt.prompt)
+            for response in random_prompt.prompt.responses:
+                this_prompt = "{}\n\t*{}".format(this_prompt, response)
+        return """{}
+#Setup
+{}
+
+# Fixed Writing Prompts
+{}
+
+# Random Writing Prompts
+{}
+""".format(self, self.boilerplate_text, fixed_prompt_strings, random_prompt_strings)
 
 
 class TestCard(unittest.TestCase):
