@@ -51,6 +51,7 @@ class Game:
         self.deck.shuffle()
         self.previous_state = None
         self.save_path = None
+        self.game_step = 0
 
     def get_step_actions(self):
         # if the player has 2 truths, they may attempt to ascend to lichdom, prompt them
@@ -76,7 +77,7 @@ class Game:
         return prompts
 
     def prompt_user(self, prompt_actions):
-        print(self.player.player_state_str())
+        print("{}: {}".format(self.game_step, self.player.player_state_str()))
         return select_from_prompts(prompt_actions)
 
     def draw(self):
@@ -165,6 +166,7 @@ them all while learning the most corrupting secrets of the void beyond reality. 
         selected_action = self.prompt_user(possible_actions)
         match selected_action.base_prompt:
             case UserPromptBase.DRAW:
+                self.game_step += 1
                 drawn_card = self.draw()
                 if drawn_card.base == DrawStepResultBase.CARD:
                     self.process_card(drawn_card.card)
@@ -173,8 +175,13 @@ them all while learning the most corrupting secrets of the void beyond reality. 
             case UserPromptBase.DISPLAY_PLAYER_HAND:
                 print(self.player.player_hand_str())
             case UserPromptBase.SCHEME_SCRY:
+                hand_size_before = len(self.player.hand)
                 selected_action.card.take_actions(self.player, self.deck)
+                hand_size_after = len(self.player.hand)
+                if hand_size_before != hand_size_after: # If the player used the scry card and didn't abort.
+                    self.game_step += 1
             case UserPromptBase.ATTEMPT_LICHDOM:
+                self.game_step += 1
                 self.attempt_lichdom()
             case UserPromptBase.SAVE:
                 self.save()
@@ -224,7 +231,8 @@ them all while learning the most corrupting secrets of the void beyond reality. 
             "player": self.player.dehydrate(),
             "deck": self.deck.dehydrate(),
             "previous_card": self.previous_card.dehydrate() if self.previous_card else None,
-            "terminal": self.terminal.name
+            "terminal": self.terminal.name,
+            "game_step": self.game_step
         }
     
     @staticmethod
@@ -234,4 +242,5 @@ them all while learning the most corrupting secrets of the void beyond reality. 
         game.deck = Deck.hydrate(data["deck"])
         game.previous_card = Card.hydrate(data["previous_card"]) if data["previous_card"] else None
         game.terminal = TerminalCondition[data["terminal"]]
+        game.game_step = data["game_step"]
         return game
