@@ -19,21 +19,22 @@ SLUGS = {
 
 class Deck:
 
-    def __init__(self):
+    def __init__(self, populate=True):
         self.cards = []
-        for suit in Suit:
-            for value in FaceValue:
-                card_type = FaceValue.get_face_card_type(value)
-                slug = SLUGS[suit][value]
-                match card_type:
-                    case CardType.CATASTROPHE:
-                        self.cards.append(Catastrophe(suit, value, slug))
-                    case CardType.ADVERSITY:
-                        self.cards.append(Adversity(suit, value, slug))
-                    case CardType.SCHEME_SCRY:
-                        self.cards.append(SchemeScry(suit, value, slug))
-                    case _:
-                        self.cards.append(Card(suit, value, slug))
+        if populate:
+            for suit in Suit:
+                for value in FaceValue:
+                    card_type = FaceValue.get_face_card_type(value)
+                    slug = SLUGS[suit][value]
+                    match card_type:
+                        case CardType.CATASTROPHE:
+                            self.cards.append(Catastrophe(suit, value, slug))
+                        case CardType.ADVERSITY:
+                            self.cards.append(Adversity(suit, value, slug))
+                        case CardType.SCHEME_SCRY:
+                            self.cards.append(SchemeScry(suit, value, slug))
+                        case _:
+                            self.cards.append(Card(suit, value, slug))
 
     def __len__(self):
         return len(self.cards)
@@ -75,6 +76,15 @@ class Deck:
         for i in range(count):
             drawn.append(self.draw())
         return drawn
+    
+    def dehydrate(self):
+        return [card.dehydrate() for card in self.cards]
+    
+    @staticmethod
+    def hydrate(data):
+        deck = Deck(populate=False)
+        deck.cards = [Card.hydrate(card_data) for card_data in data]
+        return deck
 
 
 class TestDeck(unittest.TestCase):
@@ -110,6 +120,15 @@ class TestDeck(unittest.TestCase):
         deck = Deck()
         drawn = deck.draw_many(5)
         deck.push_many(drawn)
+
+    def test_dehydrate_hydrate(self):
+        deck = Deck()
+        deck.shuffle()
+        data = deck.dehydrate()
+        rehydrated = Deck.hydrate(data)
+        for card1, card2 in zip(deck.cards, rehydrated.cards):
+            self.assertEqual(card1, card2)
+        
 
 
 if __name__ == "__main__":
