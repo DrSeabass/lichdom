@@ -1,5 +1,4 @@
 from enum import Enum
-import unittest
 from game.cards.card import CardType, Card
 
 MAX_RESOLVE = 4
@@ -100,24 +99,3 @@ class Player:
         player.marks_of_corruption = data["marks_of_corruption"]
         player.hand = [ Card.hydrate(card_data) for card_data in data["hand"] ]
         return player
-
-
-class PlayerTests(unittest.TestCase):
-
-    def test_increase_doesnt_exceed_cap(self):
-        player = Player()
-        self.assertEqual(player.resolve, MAX_RESOLVE)
-        player.increase_resolve()
-        self.assertEqual(player.resolve, MAX_RESOLVE)
-
-    def test_decrease_doesnt_exceed_min(self):
-        player = Player()
-        while not player.decrease_resolve():
-            continue
-        self.assertEqual(player.resolve, MIN_RESOLVE)
-        player.decrease_resolve()
-        self.assertEqual(player.resolve, MIN_RESOLVE)
-
-
-if __name__ == "__main__":
-    unittest.main()
