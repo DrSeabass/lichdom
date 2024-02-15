@@ -76,10 +76,10 @@ class Deck:
         for i in range(count):
             drawn.append(self.draw())
         return drawn
-    
+
     def dehydrate(self):
         return [card.dehydrate() for card in self.cards]
-    
+
     @staticmethod
     def hydrate(data):
         deck = Deck(populate=False)
@@ -128,7 +128,7 @@ class TestDeck(unittest.TestCase):
         rehydrated = Deck.hydrate(data)
         for card1, card2 in zip(deck.cards, rehydrated.cards):
             self.assertEqual(card1, card2)
-        
+
 
 
 if __name__ == "__main__":
