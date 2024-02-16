@@ -9,7 +9,6 @@ I'm hoping this improves some things I found frustrating about the player experi
 * Flipping back and forth in the PDF / physical book when drawing cards slowed play
 
 # TODOs
-* Some RandomPrompts have no base string, and only selections.  Change how they are emitted.
 * Allow for a compelled selection to require user input
 * Clean up text display
 * Make save game representation human-readable

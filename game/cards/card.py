@@ -214,7 +214,10 @@ class Card:
         for fp in self.fixed_prompts:
             display_dict["prompts"].append("* {}".format(fp))
         for prompt in self.random_prompt_sets:
-            to_add = "* {}\n\t*{}".format(prompt.prompt, random.choice(prompt.responses))
+            if prompt.prompt == "":
+                to_add = "* {}".format(random.choice(prompt.responses))
+            else:
+                to_add = "* {}\n\t* {}".format(prompt.prompt, random.choice(prompt.responses))
             display_dict["prompts"].append(to_add)
         return display_dict
 
@@ -241,9 +244,14 @@ class Card:
         for prompt in self.fixed_prompts:
             fixed_prompt_strings = "{}\n* {}".format(fixed_prompt_strings, prompt.replace("\n", " "))
         for random_prompt in self.random_prompt_sets:
+            random_response_prefix = ""
+            if random_prompt.prompt == "":
+                random_response_prefix = "\n* "
+            else:
+                random_response_prefix = "\n\t* "
             this_prompt = "* {}".format(random_prompt.prompt.replace("\n", " "))
             for response in random_prompt.responses:
-                this_prompt = "{}\n\t* {}".format(this_prompt, response.replace("\n", " "))
+                this_prompt = "{}{}{}".format(this_prompt, random_response_prefix, response.replace("\n", " "))
             random_prompt_strings = "{}\n{}".format(random_prompt_strings, this_prompt)
         return """{}
 
