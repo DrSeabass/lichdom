@@ -165,31 +165,31 @@ class Game:
         if score <= 4:
             Game.display(
                 """You die horribly, your flesh boils and your bones crumble to dust,
-cursing the land where you attempted the foul ritual.""")
+cursing the land where you attempted the foul ritual.""", archival=True)
             self.terminal = TerminalCondition.FAILED_LICHDOM
         elif 4 < score <= 8:
             Game.display(
                 """You become a wraith, a half ethereal horror beyond the comprehension of other mortals.
 You will inevitably lose your mind and sanity in the many years ahead haunting your lair, becoming only a monster with
-no other ambitions besides consuming human souls. A beast far removed from your goal of power.""")
+no other ambitions besides consuming human souls. A beast far removed from your goal of power.""", archival=True)
             self.terminal = TerminalCondition.FAILED_LICHDOM
         elif 8 < score <= 11:
             Game.display(
                 """Your foul ritual partially succeeds, giving you immense power and an extremely long life.
 You will live 12 13 hundreds of years, command armies and establish cults that will outlive you…
 but you are not immortal. Your body will eventually wither and die, everything you built will crumble to dust,
-and your name will be forgotten. You are only mortal after all.""")
+and your name will be forgotten. You are only mortal after all.""", archival=True)
             self.terminal = TerminalCondition.FAILED_LICHDOM
         elif 11 < score < 19:
             Game.display(
                 """You made it. Your immortal soul will linger in this world forever, just enough time to discover
 all the secrets of the cosmos. Your body may decay with time, but you will find younger vessels as the ages pass by.
-You are a lich.""")
+You are a lich.""", archival=True)
             self.terminal = TerminalCondition.LICHDOM
         else:
             Game.display(
                 """Time doesn’t have meaning any more. Ages come and go, empires rise and fall, and you stand above
-them all while learning the most corrupting secrets of the void beyond reality. You have become a god""")
+them all while learning the most corrupting secrets of the void beyond reality. You have become a god""", archival=True)
             self.terminal = TerminalCondition.GODHOOD
 
     def process_card(self, card):
