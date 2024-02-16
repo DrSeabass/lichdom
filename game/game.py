@@ -55,8 +55,10 @@ class Game:
         self.deck.shuffle()
         self.journal_directory = journal_directory
         if journal_directory is None:
+            self.archival = False
             self.save_path = None
         else:
+            self.archival = True
             self.one_time_setup()
             
         self.game_step = 1
@@ -192,6 +194,7 @@ them all while learning the most corrupting secrets of the void beyond reality. 
             self.terminal = TerminalCondition.GODHOOD
 
     def process_card(self, card):
+        self.display("Drew to: {}".format(card))
         if not (
                 card.cardType == CardType.ADVERSITY or
                 card.cardType == CardType.EVENT or
@@ -209,11 +212,11 @@ them all while learning the most corrupting secrets of the void beyond reality. 
             if len(display_dict["confounds"]) > 0:
                 display_string = "{}\n# Confounds\n\n".format(display_string)
             for confound in display_dict["confounds"]:
-                display_string = "{}\n##{}\n\n{}\n\n### Prompts\n\n".format(display_string, confound["title"], confound["boiler_plate"])
+                display_string = "{}\n##{}\n\n{}\n\n### Prompts\n\n".format(display_string, confound["title"], confound["boiler_plate"] )
                 for prompt in confound["prompts"]:
                     display_string = "{}\n{}".format(display_string, prompt)
             display_string = "{}\n# Journal Entry".format(display_string)
-            self.display(display_string) # TODO: This should be archival
+            self.display(display_string, self.archival)
         if self.player.resolve <= 0:
             self.terminal = TerminalCondition.LOST_RESOLVE
 
