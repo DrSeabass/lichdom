@@ -102,7 +102,7 @@ class Adversity(Card):
         else:
             return select_from_prompts([RetryActions.RETRY, RetryActions.ACCEPT])
 
-    def take_actions(self, player, deck):
+    def take_actions(self, player, deck, retry=False):
         modifiers, to_resolve, possible_influence = self.compute_modifiers(player.hand)
         spent_influence = multiselect_from_prompts(
             possible_influence,
@@ -121,14 +121,22 @@ class Adversity(Card):
                 case RetryActions.RETRY:
                     print("Trying again...")
                     player.increase_doom()
-                    self.take_actions(player, deck)
+                    self.take_actions(player, deck, retry=True)
                 case _:
                     raise ValueError("Should have hit one of the above cases")
         else:
             player.increase_resolve()
+        display_dict = super().take_actions(player, deck)
         for card in spent_influence:
             player.hand.remove(card)
+            display_dict["prompts"].append("You used {} to influence the outcome of the trial.".format(card))
+        confounds = []
         for card in to_resolve:
             player.hand.remove(card)
-            card.take_actions(player, deck)
-        super().take_actions(player, deck)
+            confounds.append(card.take_actions(player, deck))
+        display_dict["confounds"].extend(confounds)
+        if success:
+            display_dict["prompts"].append("You successfully navigated the adversity.")
+        else:
+            display_dict["prompts"].append("You failed to navigate the adversity.")
+        return display_dict

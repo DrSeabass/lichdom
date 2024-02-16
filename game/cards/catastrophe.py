@@ -46,16 +46,15 @@ class Catastrophe(Card):
         return available_companions
 
     def take_actions(self, player: game.player.Player, deck: list):
-        display_text = ""
+        display_dict = super().take_actions(player, deck)
         sacrifices = self.get_sacrifices(player)
         sacrifice = select_from_prompts(sacrifices)
         if sacrifice.type == SacrificeType.SOMEONE:
-            print("You sacrificed a companion ({}) to avoid catastrophe!".format(sacrifice))
+            display_dict["prompts"].append("You sacrificed a companion ({}) to avoid catastrophe!".format(sacrifice))
             player.hand.remove(sacrifice.card)
         else:
             player.decrease_resolve()
             player.increase_doom()
         deck.push(self)
         deck.shuffle()
-        display_text = super().take_actions(player, deck)
-        return display_text
+        return display_dict

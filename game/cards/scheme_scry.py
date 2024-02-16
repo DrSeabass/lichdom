@@ -85,5 +85,6 @@ class SchemeScry(Card):
                 return
         player.hand.remove(self)
         self.scheme_scry(deck)
-        display_string = super().take_actions(player, deck)
-        return display_string
+        display_dict = super().take_actions(player, deck)
+        display_dict["prompts"].append("You paid the cost ({}) and scryed the future!".format(payment))  
+        return display_dict

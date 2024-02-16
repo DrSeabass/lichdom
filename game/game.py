@@ -202,7 +202,17 @@ them all while learning the most corrupting secrets of the void beyond reality. 
                 card.cardType == CardType.SCHEME_SCRY or
                 card.cardType == CardType.PLOTS_CURSES
         ):
-            display_string = card.take_actions(self.player, self.deck)
+            display_dict = card.take_actions(self.player, self.deck)
+            display_string = "{}\n\n# Prompt\n\n{}".format(display_dict["title"], display_dict["boiler_plate"])
+            for prompt in display_dict["prompts"]:
+                display_string = "{}\n{}".format(display_string, prompt)
+            if len(display_dict["confounds"]) > 0:
+                display_string = "{}\n# Confounds\n\n".format(display_string)
+            for confound in display_dict["confounds"]:
+                display_string = "{}\n##{}\n\n{}\n\n### Prompts\n\n".format(display_string, confound["title"], confound["boiler_plate"])
+                for prompt in confound["prompts"]:
+                    display_string = "{}\n{}".format(display_string, prompt)
+            display_string = "{}\n# Journal Entry".format(display_string)
             self.display(display_string) # TODO: This should be archival
         if self.player.resolve <= 0:
             self.terminal = TerminalCondition.LOST_RESOLVE
