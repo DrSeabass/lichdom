@@ -13,7 +13,6 @@ I'm hoping this improves some things I found frustrating about the player experi
 * Allow for a compelled selection to require user input
 * Clean up text display
 * Make save game representation human-readable
-* Add ability to flush text prompts into some archival format
 * Implement a proper state machine & command / action pattern for game logic
 
 # Outside Refrences

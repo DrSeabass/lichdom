@@ -102,7 +102,7 @@ def file_path_prompt():
         return None
     try:
         possible_dir = os.path.dirname(possible)
-        os.path.create_dir(possible_dir, exist_ok=True)
+        os.makedirs(possible_dir, exist_ok=True)
         if os.path.exists(possible):
             print("The file already exists, and will be overwritten on save unless you enter a new name.")
         return possible
@@ -121,7 +121,8 @@ def directory_path_prompt():
         return directory_path_prompt()
     if os.path.dirname(dirname):
         try:
-            os.path.create_dir(dirname, exist_ok=True)
+            os.makedirs(dirname, exist_ok=True)
+            print("Selected directory: {}".format(dirname))
             return dirname
         except:
             print("Couldn't create the directory, try again")

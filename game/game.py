@@ -45,12 +45,13 @@ class Game:
 
     @staticmethod
     def get_save_location_from_journal_dir(dirname):
-        return os.path.join([dirname, "game_state.sav"])
+        return os.path.join(dirname, "game_state.sav")
 
     def __init__(self, journal_directory=None):
         self.player: Player = Player()
         self.deck: Deck = Deck()
         self.previous_card: Card = None
+        self.previous_state = None
         self.terminal = TerminalCondition.NOT_TERMINAL
         self.deck.shuffle()
         self.journal_directory = journal_directory
@@ -62,7 +63,7 @@ class Game:
             self.one_time_setup()
             
         self.game_step = 1
-        if self.save_path is not None:
+        if self.save_path is not None and os.path.exists:
             self.load()
         else:
             self.save()
@@ -98,9 +99,8 @@ class Game:
             #os.makedirs(os.path.join(self.journal_directory, "resources", "clubs"))
             #os.makedirs(os.path.join(self.journal_directory, "resources", "diamonds"))
         else: #Directory existed.
-            self.display("Looks like you're resuming a game.  Loading from {}".format(self.save_path))
-            if os.path.exists(self.save_path):
-                self.load()
+            self.display("Looks like you're resuming a game.  Trying to load from {}".format(self.save_path))
+            self.load()
 
     def get_step_actions(self):
         # if the player has 2 truths, they may attempt to ascend to lichdom, prompt them
@@ -125,7 +125,7 @@ class Game:
         return prompts
 
     def prompt_user(self, prompt_actions):
-        Game.display("{}: {}".format(self.game_step, self.player.player_state_str()))
+        self.display("{}: {}".format(self.game_step, self.player.player_state_str()))
         return select_from_prompts(prompt_actions)
 
     def draw(self):
@@ -159,38 +159,38 @@ class Game:
         for _ in range(truths):
             roll = random.randint(1, 6)
             rolls.append(roll)
-        Game.display("Rolled for truths: {}".format(rolls))
+        self.display("Rolled for truths: {}".format(rolls))
         score += sum(rolls)
-        Game.display("Final Score: {}".format(score))
+        self.display("Final Score: {}".format(score))
         # TODO: There have to be better places to keep these strings
         if score <= 4:
-            Game.display(
+            self.display(
                 """You die horribly, your flesh boils and your bones crumble to dust,
-cursing the land where you attempted the foul ritual.""", archival=True)
+cursing the land where you attempted the foul ritual.""", record=True)
             self.terminal = TerminalCondition.FAILED_LICHDOM
         elif 4 < score <= 8:
-            Game.display(
+            self.display(
                 """You become a wraith, a half ethereal horror beyond the comprehension of other mortals.
 You will inevitably lose your mind and sanity in the many years ahead haunting your lair, becoming only a monster with
-no other ambitions besides consuming human souls. A beast far removed from your goal of power.""", archival=True)
+no other ambitions besides consuming human souls. A beast far removed from your goal of power.""", record=True)
             self.terminal = TerminalCondition.FAILED_LICHDOM
         elif 8 < score <= 11:
-            Game.display(
+            self.display(
                 """Your foul ritual partially succeeds, giving you immense power and an extremely long life.
 You will live 12 13 hundreds of years, command armies and establish cults that will outlive you…
 but you are not immortal. Your body will eventually wither and die, everything you built will crumble to dust,
-and your name will be forgotten. You are only mortal after all.""", archival=True)
+and your name will be forgotten. You are only mortal after all.""", record=True)
             self.terminal = TerminalCondition.FAILED_LICHDOM
         elif 11 < score < 19:
-            Game.display(
+            self.display(
                 """You made it. Your immortal soul will linger in this world forever, just enough time to discover
 all the secrets of the cosmos. Your body may decay with time, but you will find younger vessels as the ages pass by.
-You are a lich.""", archival=True)
+You are a lich.""", record=True)
             self.terminal = TerminalCondition.LICHDOM
         else:
-            Game.display(
+            self.display(
                 """Time doesn’t have meaning any more. Ages come and go, empires rise and fall, and you stand above
-them all while learning the most corrupting secrets of the void beyond reality. You have become a god""", archival=True)
+them all while learning the most corrupting secrets of the void beyond reality. You have become a god""", record=True)
             self.terminal = TerminalCondition.GODHOOD
 
     def process_card(self, card):
@@ -232,7 +232,7 @@ them all while learning the most corrupting secrets of the void beyond reality. 
                 else:  # Magical Cataclysm
                     self.terminal = TerminalCondition.CATACLYSM
             case UserPromptBase.DISPLAY_PLAYER_HAND:
-                Game.display(self.player.player_hand_str())
+                self.display(self.player.player_hand_str())
             case UserPromptBase.SCHEME_SCRY:
                 hand_size_before = len(self.player.hand)
                 selected_action.card.take_actions(self.player, self.deck)
@@ -250,16 +250,21 @@ them all while learning the most corrupting secrets of the void beyond reality. 
     def save(self):
         self.previous_state = self.dehydrate()
         if self.save_path is not None:
-            Game.display("Saving to {}".format(self.save_path))
+            self.display("Saving to {}".format(self.save_path))
             open_flags = "wb"
             if not os.path.exists(self.save_path):
                 open_flags = "xb"
             with open(self.save_path, open_flags) as save_file:
                 pickle.dump(self.previous_state, save_file)
         else:
-            Game.display("No save path set, only saved in memory, not to disk.")
+            self.display("No save path set, only saved in memory, not to disk.")
 
     def load(self):
+        if self.previous_state is None:
+            if os.path.exists(self.save_path):
+                self.previous_state = pickle.load(open(self.save_path, "rb"))
+            else:
+                return # No previous state to load
         saved_game = Game.hydrate(self.previous_state)
         if os.path.exists(self.save_path):
             with open(self.save_path, "rb") as save_file:
@@ -273,15 +278,15 @@ them all while learning the most corrupting secrets of the void beyond reality. 
             self.step()
         match self.terminal:
             case TerminalCondition.CATACLYSM:
-                Game.display("Placeholder cataclysm string")
+                self.display("Placeholder cataclysm string")
             case TerminalCondition.LOST_RESOLVE:
-                Game.display("Placeholder lost resolve string")
+                self.display("Placeholder lost resolve string")
             case TerminalCondition.FAILED_LICHDOM:
-                Game.display("Placeholder failed lichdom string")
+                self.display("Placeholder failed lichdom string")
             case TerminalCondition.LICHDOM:
-                Game.display("Placeholder lichdom string")
+                self.display("Placeholder lichdom string")
             case TerminalCondition.GODHOOD:
-                Game.display("Placeholder godhood string")
+                self.display("Placeholder godhood string")
 
     def dehydrate(self):
         return {
@@ -302,8 +307,10 @@ them all while learning the most corrupting secrets of the void beyond reality. 
         game.game_step = data["game_step"]
         return game
 
-    @staticmethod
-    def display(text, archival=False):
+    def display(self,text, record=False):
         print(text)
-        if archival:
-            raise NotImplementedError
+        if record and self.archival:
+            path = os.path.join(self.journal_directory, "journal", "entry_{}.md".format(self.game_step))
+            os.makedirs(os.path.dirname(path), exist_ok=True)
+            with open(path, "w") as journal_entry:
+                journal_entry.write(text)
