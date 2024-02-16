@@ -29,3 +29,6 @@ forgotten by mortals. Additional art by Henrik Karppinen.
 * Lichdom © 2022 by Adrian Lopez Sanjuan is licensed under
 CC BY-SA 4.0. You are free to share and adapt this material as
 long as you give attribution and use the same license.
+
+## [Obsidian](https://obsidian.md/)
+The output directory for the game is designed to be used as an obsidian vault.  This allows you to cross-reference elements from the journal entries and game elements.  It also provides as pace for you to do whatever creative writing you'd like to do with the game's prompts, and gives you an easy mechanism for sharing that writing with others.
