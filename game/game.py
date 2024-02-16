@@ -57,12 +57,48 @@ class Game:
         if journal_directory is None:
             self.save_path = None
         else:
-            self.save_path = Game.get_save_location_from_journal_dir(self.journal_directory)
+            self.one_time_setup()
+            
         self.game_step = 1
         if self.save_path is not None:
             self.load()
         else:
             self.save()
+
+    def one_time_setup(self):
+        self.save_path = Game.get_save_location_from_journal_dir(self.journal_directory)
+        # Ensure the directory structure
+        # -game_root
+        # -- game_state.sav
+        # -- journal
+        # --- entry_1.md
+        # --- entry_2.md
+        # --- ...
+        # -- resources
+        # -- rules
+        # -- random tables & entities
+        # -- spades
+        # --- Ace of Spades.md
+        # --- 2 of Spades.md
+        # --- ...
+        # -- hearts
+        # -- clubs
+        # -- diamonds
+        if not os.path.exists(self.journal_directory): #If it does exist, assume we're loading a game.
+            os.makedirs(self.journal_directory)
+            os.makedirs(os.path.join(self.journal_directory, "journal"))
+            # TODO: Do this later if it looks like you want the raw material dumped every time.  Text is cheap.
+            #os.makedirs(os.path.join(self.journal_directory, "resources"))
+            #os.makedirs(os.path.join(self.journal_directory, "resources", "rules"))
+            #os.makedirs(os.path.join(self.journal_directory, "resources", "random tables & entities"))
+            #os.makedirs(os.path.join(self.journal_directory, "resources", "spades"))
+            #os.makedirs(os.path.join(self.journal_directory, "resources", "hearts"))
+            #os.makedirs(os.path.join(self.journal_directory, "resources", "clubs"))
+            #os.makedirs(os.path.join(self.journal_directory, "resources", "diamonds"))
+        else: #Directory existed.
+            self.display("Looks like you're resuming a game.  Loading from {}".format(self.save_path))
+            if os.path.exists(self.save_path):
+                self.load()
 
     def get_step_actions(self):
         # if the player has 2 truths, they may attempt to ascend to lichdom, prompt them
