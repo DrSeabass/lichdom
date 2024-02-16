@@ -46,6 +46,7 @@ class Catastrophe(Card):
         return available_companions
 
     def take_actions(self, player: game.player.Player, deck: list):
+        display_text = ""
         sacrifices = self.get_sacrifices(player)
         sacrifice = select_from_prompts(sacrifices)
         if sacrifice.type == SacrificeType.SOMEONE:
@@ -56,4 +57,5 @@ class Catastrophe(Card):
             player.increase_doom()
         deck.push(self)
         deck.shuffle()
-        super().take_actions(player, deck)
+        display_text = super().take_actions(player, deck)
+        return display_text

@@ -85,4 +85,5 @@ class SchemeScry(Card):
                 return
         player.hand.remove(self)
         self.scheme_scry(deck)
-        super().take_actions(player, deck)
+        display_string = super().take_actions(player, deck)
+        return display_string

@@ -130,7 +130,6 @@ class Game:
         if len(self.deck) == 0:
             raise ValueError("You can't deck yourself in this game; should always have 4 catastrophe cards")
         next_card = self.deck.draw()
-        Game.display("Drew to {}".format(next_card))
         if (
                 self.previous_card is not None
                 and self.previous_card.theme == Theme.Arcane
@@ -203,7 +202,8 @@ them all while learning the most corrupting secrets of the void beyond reality. 
                 card.cardType == CardType.SCHEME_SCRY or
                 card.cardType == CardType.PLOTS_CURSES
         ):
-            card.take_actions(self.player, self.deck)
+            display_string = card.take_actions(self.player, self.deck)
+            self.display(display_string) # TODO: This should be archival
         if self.player.resolve <= 0:
             self.terminal = TerminalCondition.LOST_RESOLVE
 

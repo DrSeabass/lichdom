@@ -203,15 +203,14 @@ class Card:
         return deepcopy(self)
 
     def take_actions(self, player, deck):
-        print(self.boilerplate_text)
-        print()
+        title = str(self)
+        display_string = "{}\n# Prompt\n{}".format(title, self.boilerplate_text)
         for fp in self.fixed_prompts:
-            print(fp)
-            print()
+            display_string = "{}\n{}\n".format(display_string, fp)
         for prompt in self.random_prompt_sets:
-            print(prompt.prompt)
-            print(random.choice(prompt.responses))
-            print()
+            display_string = "{}\n{}\n{}\n".format(display_string, prompt.prompt, random.choice(prompt.responses)) 
+        display_string = "{}\n# Journal Entry\n\n".format(display_string)
+        return display_string
 
     def __eq__(self, card2):
         return (
