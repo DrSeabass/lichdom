@@ -63,6 +63,7 @@ class Game:
             self.one_time_setup()
             
         self.game_step = 1
+        self.journal_entry = 1
         if self.save_path is not None and os.path.exists:
             self.load()
         else:
@@ -310,7 +311,8 @@ them all while learning the most corrupting secrets of the void beyond reality. 
     def display(self,text, record=False):
         print(text)
         if record and self.archival:
-            path = os.path.join(self.journal_directory, "journal", "entry_{}.md".format(self.game_step))
+            path = os.path.join(self.journal_directory, "journal", "entry_{}.md".format(self.journal_entry))
+            self.journal_entry += 1
             os.makedirs(os.path.dirname(path), exist_ok=True)
             with open(path, "w") as journal_entry:
                 journal_entry.write(text)
