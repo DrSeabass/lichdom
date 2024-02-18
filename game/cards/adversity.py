@@ -1,6 +1,6 @@
 from enum import Enum
 import random
-from game.cards.card import Card, Suit, FaceValue, CardType
+from game.cards.card import Card, Suit, FaceValue, CardType, Theme
 from game.action import select_from_prompts, multiselect_from_prompts
 
 class RetryActions(Enum):
@@ -38,24 +38,29 @@ class Adversity(Card):
         modifiers = []
         to_resolve = []
         possible_influence = []
+        prompts = []
         for card in hand:
             if card.theme == self.theme:
                 if card.cardType == CardType.TRUTH:
-                    print("Knowledge of a truth provides you an advantage in this trial.")
+                    prompts.append("* Knowledge of a truth [[{}]] provides you an advantage in this trial.".format(card))
                     modifiers.append(1)
                 elif card.cardType == CardType.COMPANION:
-                    print("One of your companions aids you in this trial")
+                    prompts.append("* One of your companions, [[{}]], aids you in this trial.".format(card))
                     modifiers.append(1)
                 elif card.cardType == CardType.PLOTS_CURSES:
-                    print("An earlier plot or curse influences the trial")
+                    if card.Theme == Theme.Mundane:
+                        prompts.append("* An earlier plot [[{}]] influences the trial.".format(card))
+                    else:
+                        prompts.append("* An earlier curse [[{}]] influences the trial.".format(card))
                     modifiers.append(2)
                     to_resolve.append(card)
             if card.cardType == CardType.INFLUENCE:
                 possible_influence.append(card)
-        return modifiers, to_resolve, possible_influence
+        return modifiers, to_resolve, possible_influence, prompts
 
     def use_influence(self, spent_influence):
         influence_modifier = 0
+        prompts = []
         for card in spent_influence:
             score = 0
             if card.theme == self.theme:
@@ -63,9 +68,9 @@ class Adversity(Card):
                 score += random.randint(1, 6)
             else:
                 score += random.randint(1, 6)
-            print("Your influence has eased your challenge {}.".format(score))
+            prompts.append("* You used your influence, [[{}]] to ease your challenge by {}.".format(card, score))
             influence_modifier += score
-        return influence_modifier
+        return influence_modifier, prompts
 
     @staticmethod
     def check_target(target: int, modifiers: list):
@@ -103,11 +108,12 @@ class Adversity(Card):
             return select_from_prompts([RetryActions.RETRY, RetryActions.ACCEPT])
 
     def take_actions(self, player, deck, retry=False):
-        modifiers, to_resolve, possible_influence = self.compute_modifiers(player.hand)
+        modifiers, to_resolve, possible_influence, modifier_prompts = self.compute_modifiers(player.hand)
         spent_influence = multiselect_from_prompts(
             possible_influence,
             "Select which influences to use, remembering this task is {}.".format(self.theme))
-        modifiers.append(self.use_influence(spent_influence))
+        influence_modifiers, influence_prompts = self.use_influence(spent_influence)
+        modifiers.append(influence_modifiers)
         target = self.get_threshold()
         success = Adversity.check_target(target, modifiers)
         if not success:
@@ -127,9 +133,8 @@ class Adversity(Card):
         else:
             player.increase_resolve()
         display_dict = super().take_actions(player, deck)
-        for card in spent_influence:
-            player.hand.remove(card)
-            display_dict["prompts"].append("* You used {} to influence the outcome of the trial.".format(card))
+        display_dict["prompts"].extend(modifier_prompts)
+        display_dict["prompts"].extend(influence_prompts)
         confounds = []
         for card in to_resolve:
             player.hand.remove(card)
