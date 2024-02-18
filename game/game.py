@@ -126,7 +126,7 @@ class Game:
         return prompts
 
     def prompt_user(self, prompt_actions):
-        self.display("{}: {}".format(self.game_step, self.player.player_state_str()))
+        self.display("Turn {}: {}".format(self.game_step, self.player.player_state_str()))
         return select_from_prompts(prompt_actions)
 
     def draw(self):
