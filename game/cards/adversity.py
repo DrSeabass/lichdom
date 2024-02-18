@@ -107,7 +107,7 @@ class Adversity(Card):
         else:
             return select_from_prompts([RetryActions.RETRY, RetryActions.ACCEPT])
 
-    def take_actions(self, player, deck, retry=False):
+    def take_actions(self, player, deck, corruption_marks = []):
         modifiers, to_resolve, possible_influence, modifier_prompts = self.compute_modifiers(player.hand)
         spent_influence = multiselect_from_prompts(
             possible_influence,
@@ -126,8 +126,9 @@ class Adversity(Card):
                     player.decrease_resolve()
                 case RetryActions.RETRY:
                     print("Trying again...")
+                    corruption = player.invoke_dark_power(self.theme)
                     player.increase_doom()
-                    self.take_actions(player, deck, retry=True)
+                    return self.take_actions(player, deck, corruption_marks=(corruption_marks + [corruption]))
                 case _:
                     raise ValueError("Should have hit one of the above cases")
         else:
@@ -146,4 +147,9 @@ class Adversity(Card):
             display_dict["prompts"].append("* You successfully navigated the adversity.")
         else:
             display_dict["prompts"].append("* You failed to navigate the adversity.")
+        if len(corruption_marks) > 0:
+            to_add = "* You used your dark powers to try to overcome this obstacle. This has affected you in the following ways:"
+            for mark in corruption_marks:
+                to_add = "{}\n\t* {}".format(to_add, mark)
+            display_dict["prompts"].append(to_add)
         return display_dict

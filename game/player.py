@@ -1,5 +1,7 @@
+import random
 from enum import Enum
-from game.cards.card import CardType, Card
+from game.cards.card import CardType, Card, Theme
+from game.doom import body_doom, mind_doom
 
 MAX_RESOLVE = 4
 MIN_RESOLVE = 0
@@ -24,9 +26,24 @@ class Player:
         self.doom = 0
         self.marks_of_corruption = []
         self.hand = []
+        self.available_body_doom = body_doom.copy()
+        self.available_mind_doom = mind_doom.copy()
 
     def increase_resolve(self):
         self.resolve = min(self.resolve + 1, MAX_RESOLVE - self.doom)
+
+    def invoke_dark_power(self, theme):
+        selected = ""
+        if theme == Theme.Arcane:
+            selected = random.choice(self.available_mind_doom)
+            self.available_mind_doom.remove(selected)
+        elif theme == Theme.Mundane:
+            selected = random.choice(self.available_body_doom)
+            self.available_body_doom.remove(selected)
+        else:
+            raise ValueError("Unexpected theme: {}".format(theme))
+        self.marks_of_corruption.append(selected)
+        return selected
 
     def increase_doom(self): # Doom does not decrease
         self.doom += 1
@@ -88,7 +105,9 @@ class Player:
             "resolve": self.resolve,
             "doom": self.doom,
             "marks_of_corruption": self.marks_of_corruption,
-            "hand": [ card.dehydrate() for card in self.hand ]
+            "hand": [ card.dehydrate() for card in self.hand ],
+            "available_body_doom": self.available_body_doom,
+            "available_mind_doom": self.available_mind_doom
         }
     
     @staticmethod
@@ -98,4 +117,6 @@ class Player:
         player.doom = data["doom"]
         player.marks_of_corruption = data["marks_of_corruption"]
         player.hand = [ Card.hydrate(card_data) for card_data in data["hand"] ]
+        player.available_body_doom = data["available_body_doom"]
+        player.available_mind_doom = data["available_mind_doom"]
         return player
