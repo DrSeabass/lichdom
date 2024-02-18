@@ -68,6 +68,33 @@ class CardType(Enum):
                 return "Truth"
             case _:
                 raise TypeError("Unexpected value {}".format(self))
+            
+card_type_descriptions = {
+    CardType.EVENT: """Events in the life of your sorcerer for which you do not need to roll a challenge, you can simply make up what you wish to resolve the
+event as it fits your story, then discard the card. Narrative Events should be used as an opportunity for developing the world around your character; 
+perhaps describing an encounter with an almost extinct but ancient sentient race, your dealings with the guild of imperial librarians, or a great victory
+against the secretive cult of the Serpent God. 
+""",
+    CardType.SCHEME_SCRY: """Special opportunities for your sorcerer to change future events through Mundane Scheming of Arcane Scrying. Keep the card to
+use whenever you wish, but only after completing an event and before drawing the next card. If the deck doesn’t contain enough cards to draw, you lose
+the game. You can explain it as a mishap of your Scheming or Scrying, such as failing to control other conspirators or trapping your mind inside
+a crystal ball.""",
+    CardType.ADVERSITY: """Significant challenges in the life of your sorcerer, such as navigating a complicated political landscape or surviving a 
+duel against another sorcerer. Remember that you can use Corrupting Powers to repeat the roll of an Adversity challenge with the same bonuses and penalties
+as the first roll, but this increases your Doom by 1 hence reducing your maximum Resolve for the rest of the game.""",
+    CardType.PLOTS_CURSES: """Mundane Plots and Arcane Curses work against you, such as a conspiracy to end your life, or enemy petitions to responsive gods
+to halt your progress and thwart your ambitions. Keep the card visible on the table. The next time you have to roll a challenge of the same nature (Mundane or Arcane),
+apply a penalty of -2 and discard the card. The penalties of several Plot/Curse cards are cumulative over the next challenge""",
+    CardType.COMPANION: """Mundane and Arcane allies in your story, such as the spirit of the fi rst wizard to walk this world, or an assassin that seeks favour with
+an elder god. Keep the card with you while your companion is alive, providing a +1 bonus to challenges of the same nature (Mundane or Arcane). You can also sacrifice a
+Companion for one of the following effects, then discard the card.""",
+    CardType.INFLUENCE: """Influence over the Mundane or the Arcane that provides a critical - but fleeting - help in the form of things such as favours owed by
+powerful mortals or forgotten rituals of power that can only be uttered once.""",
+    CardType.CATASTROPHE: """The impending Doom in your story. It can represent many different things, such as personal failure, unavoidable traps by bitter enemies,
+or general strife in the world. When you draw a Catastrophe you immediately gain 1 Doom and reduce 1 Resolve unless you sacrifice a Companion, which suffers the horrible
+consequences of the Catastrophe instead. Shuffle the Catastrophe card back into the deck after resolving its effects. If you draw two Arcane Calamities in consecutive turns,
+you bring the end of times to your world and lose the game."""
+}
 
 
 class FaceValue(Enum):
