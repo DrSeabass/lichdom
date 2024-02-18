@@ -129,14 +129,14 @@ class Adversity(Card):
         display_dict = super().take_actions(player, deck)
         for card in spent_influence:
             player.hand.remove(card)
-            display_dict["prompts"].append("You used {} to influence the outcome of the trial.".format(card))
+            display_dict["prompts"].append("* You used {} to influence the outcome of the trial.".format(card))
         confounds = []
         for card in to_resolve:
             player.hand.remove(card)
             confounds.append(card.take_actions(player, deck))
         display_dict["confounds"].extend(confounds)
         if success:
-            display_dict["prompts"].append("You successfully navigated the adversity.")
+            display_dict["prompts"].append("* You successfully navigated the adversity.")
         else:
-            display_dict["prompts"].append("You failed to navigate the adversity.")
+            display_dict["prompts"].append("* You failed to navigate the adversity.")
         return display_dict
