@@ -210,7 +210,7 @@ class Card:
             "confounds": []
         }
         display_dict["title"] = str(self)
-        display_dict["boiler_plate"] = self.boilerplate_text
+        display_dict["boiler_plate"] = self.boilerplate_text.replace("\n", " ")
         for fp in self.fixed_prompts:
             display_dict["prompts"].append("* {}".format(fp).replace("\n", " "))
         for prompt in self.random_prompt_sets:
