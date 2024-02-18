@@ -212,12 +212,12 @@ class Card:
         display_dict["title"] = str(self)
         display_dict["boiler_plate"] = self.boilerplate_text
         for fp in self.fixed_prompts:
-            display_dict["prompts"].append("* {}".format(fp))
+            display_dict["prompts"].append("* {}".format(fp)).replace("\n", " ")
         for prompt in self.random_prompt_sets:
             if prompt.prompt == "":
-                to_add = "* {}".format(random.choice(prompt.responses))
+                to_add = "* {}".format(random.choice(prompt.responses)).replace("\n", " ")
             else:
-                to_add = "* {}\n\t* {}".format(prompt.prompt, random.choice(prompt.responses))
+                to_add = "* {}\n\t* {}".format(prompt.prompt, random.choice(prompt.responses)).replace("\n", " ")
             display_dict["prompts"].append(to_add)
         return display_dict
 
