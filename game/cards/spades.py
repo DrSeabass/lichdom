@@ -1,5 +1,7 @@
 from game.cards.card import FaceValue, RandomPrompt
 
+suit_description = "Unnatural events such as an abhorrent pact with a demon to slay your enemies or the perilous exploration of other realities."
+
 card_slugs = {
     FaceValue.ACE: {
         "boiler_plate":

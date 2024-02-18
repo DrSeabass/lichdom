@@ -1,5 +1,7 @@
 from game.cards.card import FaceValue, RandomPrompt
 
+suit_description = "Research events; such as reading a fabled book bound with human skin or experimenting with the alchemy of the flesh."
+
 card_slugs = {
     FaceValue.ACE: {
         "boiler_plate":

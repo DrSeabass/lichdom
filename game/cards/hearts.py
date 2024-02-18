@@ -1,5 +1,7 @@
 from game.cards.card import FaceValue, RandomPrompt
 
+suit_description = "Social events such as the service demanded by a warlord or the vile accusations of a king."
+
 card_slugs = {
     FaceValue.ACE: {
         "boiler_plate":

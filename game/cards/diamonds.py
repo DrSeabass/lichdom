@@ -1,5 +1,7 @@
 from game.cards.card import FaceValue, RandomPrompt
 
+suit_description = """Violent events; such as a treacherous assassination attempt or an escaped monstrosity within your own tower."""
+
 card_slugs = {
     FaceValue.ACE: {
         "boiler_plate":
