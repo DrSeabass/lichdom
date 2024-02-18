@@ -18,7 +18,7 @@ I'm hoping this improves some things I found frustrating about the player experi
 * Make save game representation human-readable
 * Implement a proper state machine & command / action pattern for game logic
 
-# Outside Refrences
+# Outside References
 
 ## [License CC-BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)
 
