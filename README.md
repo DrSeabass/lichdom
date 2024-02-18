@@ -1,7 +1,7 @@
 # lichdom-in-python
 This is an implementation of the solo journaling TTRPG Lichdom.  Whereas the base game was designed to be played
 with dice, a standard 52-card deck, pens, and paper, this version is (currently) meant to be played through the
-python REPL.
+python REPL and [obsidian](https://obsidian.md/), a text editor capable of displaying markdown files and showing linkages between them.
 
 I'm hoping this improves some things I found frustrating about the player experience:
 * Physically journaling my game made it hard to share with others online
@@ -9,6 +9,7 @@ I'm hoping this improves some things I found frustrating about the player experi
 * Flipping back and forth in the PDF / physical book when drawing cards slowed play
 
 # TODOs
+* Place game over text (lichdom attempts, etc) in final journal entry.
 * Adversity reroll behavior is slightly off -- it should lock in the used effects, not allow re-selection
 * Allow companion sacrifice after roll on a challenge to get a bonus 1d6 to complete. 
 * Lift replacement of newlines to string into slug loading or card construction
