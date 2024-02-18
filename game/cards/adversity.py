@@ -48,7 +48,7 @@ class Adversity(Card):
                     prompts.append("* One of your companions, [[{}]], aids you in this trial.".format(card))
                     modifiers.append(1)
                 elif card.cardType == CardType.PLOTS_CURSES:
-                    if card.Theme == Theme.Mundane:
+                    if card.theme == Theme.Mundane:
                         prompts.append("* An earlier plot [[{}]] influences the trial.".format(card))
                     else:
                         prompts.append("* An earlier curse [[{}]] influences the trial.".format(card))
