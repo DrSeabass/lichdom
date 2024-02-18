@@ -9,6 +9,8 @@ I'm hoping this improves some things I found frustrating about the player experi
 * Flipping back and forth in the PDF / physical book when drawing cards slowed play
 
 # TODOs
+* Incorporate Influence and Companions into Prompt Sets
+* Lift replacement of newlines to string into slug loading or card construction
 * Handle Using Dark Powers Actions
 * Allow for a compelled selection to require user input
 * Clean up text display
