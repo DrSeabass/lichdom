@@ -213,7 +213,7 @@ them all while learning the most corrupting secrets of the void beyond reality. 
             if len(display_dict["confounds"]) > 0:
                 display_string = "{}\n# Confounds\n\n".format(display_string)
             for confound in display_dict["confounds"]:
-                display_string = "{}\n##{}\n\n{}\n\n### Prompts\n\n".format(display_string, confound["title"], confound["boiler_plate"] )
+                display_string = "{}\n## {}\n\n{}\n\n### Prompts\n\n".format(display_string, confound["title"], confound["boiler_plate"] )
                 for prompt in confound["prompts"]:
                     display_string = "{}\n{}".format(display_string, prompt)
             display_string = "{}\n# Journal Entry".format(display_string)
