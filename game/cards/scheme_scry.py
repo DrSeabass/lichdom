@@ -43,6 +43,9 @@ class SchemeScry(Card):
         rolls.sort()
         certain_count = rolls[0]
         uncertain_count = rolls[1]
+        total = sum(rolls)
+        if total > len(deck):
+            return True # We should use TerminalConditions enum, but it's a circular import.  TODO would be to fix that.
         certain_future = deck.draw_many(certain_count)
         uncertain_future = deck.draw_many(uncertain_count)
         swap_index_1, swap_index_2 = select_one_from_two(
@@ -58,6 +61,7 @@ class SchemeScry(Card):
         deck.shuffle()
         random.shuffle(certain_future)
         deck.push_many(certain_future)
+        return False
 
     def find_possible_payment(self, player):
         options = [Payment(PaymentType.ABANDON)]
@@ -83,8 +87,13 @@ class SchemeScry(Card):
                 player.hand.remove(payment.card)
             case PaymentType.ABANDON:
                 return
+        over_scryped = self.scheme_scry(deck)
         player.hand.remove(self)
-        self.scheme_scry(deck)
         display_dict = super().take_actions(player, deck)
-        display_dict["prompts"].append("* You paid the cost ({}) and scryed the future!".format(payment))  
+        if over_scryped:
+            display_dict["prompts"].append("* You paid the cost ({}) and scryed too much. Something goes awry and ends your attempt to attain lichdom!".format(payment))
+            # We *SHOULD* return the terminal state, but the plumbing isn't there.  For now, we're going to set player resolve to 0 to end the game
+            player.resolve = 0
+        else:
+            display_dict["prompts"].append("* You paid the cost ({}) and scryed the future!".format(payment))  
         return display_dict
