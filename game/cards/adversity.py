@@ -134,6 +134,8 @@ class Adversity(Card):
         for card in to_resolve:
             player.hand.remove(card)
             confounds.append(card.take_actions(player, deck))
+        for card in spent_influence:
+            player.hand.remove(card)
         display_dict["confounds"].extend(confounds)
         if success:
             display_dict["prompts"].append("* You successfully navigated the adversity.")
