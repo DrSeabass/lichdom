@@ -9,7 +9,6 @@ I'm hoping this improves some things I found frustrating about the player experi
 * Flipping back and forth in the PDF / physical book when drawing cards slowed play
 
 # TODOs
-* Adversity reroll behavior is slightly off -- it should lock in the used effects, not allow re-selection
 * Allow companion sacrifice after roll on a challenge to get a bonus 1d6 to complete. 
 * Lift replacement of newlines to string into slug loading or card construction
 * Allow for a compelled selection to require user input

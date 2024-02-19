@@ -116,22 +116,25 @@ class Adversity(Card):
         modifiers.append(influence_modifiers)
         target = self.get_threshold()
         success = Adversity.check_target(target, modifiers)
-        if not success:
+        keep_trying = True
+        while not success and keep_trying:
             user_selection = self.offer_retry(player)
-            print("User selected {}".format(user_selection))
             match user_selection:
                 case RetryActions.ACCEPT:
                     player.decrease_resolve()
+                    keep_trying = False
                 case RetryActions.FAIL:
                     player.decrease_resolve()
+                    keep_trying = False
                 case RetryActions.RETRY:
                     print("Trying again...")
+                    success = Adversity.check_target(target, modifiers)
                     corruption = player.invoke_dark_power(self.theme)
                     player.increase_doom()
-                    return self.take_actions(player, deck, corruption_marks=(corruption_marks + [corruption]))
+                    corruption_marks.append(corruption)
                 case _:
                     raise ValueError("Should have hit one of the above cases")
-        else:
+        if success:
             player.increase_resolve()
         display_dict = super().take_actions(player, deck)
         display_dict["prompts"].extend(modifier_prompts)
