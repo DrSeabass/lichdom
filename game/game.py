@@ -279,15 +279,15 @@ them all while learning the most corrupting secrets of the void beyond reality. 
             self.step()
         match self.terminal:
             case TerminalCondition.CATACLYSM:
-                self.display("Placeholder cataclysm string")
+                self.display("In your bid to become a lich, you have meddled with powers you did not understand and could not control.  Not only will you not live forever, no one will live. Forever.", record=True)
             case TerminalCondition.LOST_RESOLVE:
-                self.display("Placeholder lost resolve string")
+                self.display("You lose the will to carry on.  You will never become a lich.  You will never become a god.  You will never be remembered.  You will never be anything.", record=True)
             case TerminalCondition.FAILED_LICHDOM:
-                self.display("Placeholder failed lichdom string")
+                self.display("You fail in your bid to become a lich.", record=True)
             case TerminalCondition.LICHDOM:
-                self.display("Placeholder lichdom string")
+                self.display("You succeeded in your bid to become a lich!", record=True)
             case TerminalCondition.GODHOOD:
-                self.display("Placeholder godhood string")
+                self.display("You enjoy success beyond what you could have ever imagined.  You are not merely some undead, undying vessel.  You are a god.", record=True)
 
     def dehydrate(self):
         return {
