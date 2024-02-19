@@ -7,6 +7,7 @@ class RetryActions(Enum):
     RETRY = 0
     ACCEPT = 1
     FAIL = 2
+    SACRIFICE = 3
 
     def __str__(self):
         match self:
@@ -16,6 +17,8 @@ class RetryActions(Enum):
                 return "Accept defeat and continue on."
             case RetryActions.FAIL:
                 return "Compelled Failure"
+            case RetryActions.SACRIFICE:
+                return "Sacrifice a companion to gain 1d6 bonus to your test."
 
 
 class Adversity(Card):
@@ -76,6 +79,7 @@ class Adversity(Card):
     def check_target(target: int, modifiers: list):
         disp_string = ""
         ret_val = False
+        delta = target - sum(modifiers)
         if (target - sum(modifiers)) <= 2:
             disp_string = "Your preparations allow you to overcome the challenge with ease."
             ret_val = True
@@ -97,15 +101,22 @@ class Adversity(Card):
                 disp_string = disp_string[:-1]
                 ret_val = False
         print(disp_string)
-        return ret_val
+        return ret_val, delta
 
-    def offer_retry(self, player) -> object:
+    def offer_retry(self, player, deficiency) -> object:
         if player.resolve <= 1 and player.doom >= 3:
             return RetryActions.FAIL # Can't succeed
         elif player.doom < 3 and player.resolve == 1:
             return  RetryActions.RETRY # Retry Compelled
         else:
-            return select_from_prompts([RetryActions.RETRY, RetryActions.ACCEPT])
+            maximum_sacrifice = 0
+            for card in player.hand:
+                if card.cardType == CardType.COMPANION:
+                    maximum_sacrifice += 6
+            if maximum_sacrifice >= deficiency:
+                return select_from_prompts([RetryActions.RETRY, RetryActions.ACCEPT, RetryActions.SACRIFICE])
+            else:
+                return select_from_prompts([RetryActions.RETRY, RetryActions.ACCEPT])
 
     def take_actions(self, player, deck, corruption_marks = []):
         modifiers, to_resolve, possible_influence, modifier_prompts = self.compute_modifiers(player.hand)
@@ -115,10 +126,10 @@ class Adversity(Card):
         influence_modifiers, influence_prompts = self.use_influence(spent_influence)
         modifiers.append(influence_modifiers)
         target = self.get_threshold()
-        success = Adversity.check_target(target, modifiers)
+        success, deficiency = Adversity.check_target(target, modifiers)
         keep_trying = True
         while not success and keep_trying:
-            user_selection = self.offer_retry(player)
+            user_selection = self.offer_retry(player, deficiency)
             match user_selection:
                 case RetryActions.ACCEPT:
                     player.decrease_resolve()
@@ -128,10 +139,12 @@ class Adversity(Card):
                     keep_trying = False
                 case RetryActions.RETRY:
                     print("Trying again...")
-                    success = Adversity.check_target(target, modifiers)
+                    success, deficiency = Adversity.check_target(target, modifiers)
                     corruption = player.invoke_dark_power(self.theme)
                     player.increase_doom()
                     corruption_marks.append(corruption)
+                case RetryActions.SACRIFICE:
+                    raise NotImplementedError("Sacrifice not implemented")
                 case _:
                     raise ValueError("Should have hit one of the above cases")
         if success:
