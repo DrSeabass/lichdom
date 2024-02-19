@@ -9,10 +9,12 @@ I'm hoping this improves some things I found frustrating about the player experi
 * Flipping back and forth in the PDF / physical book when drawing cards slowed play
 
 # TODOs
+* Pull classes apart into separate python files
+* Introduce better package structure
+* Clean up text display
 * Lift replacement of newlines to string into slug loading or card construction
 * Allow for a compelled selection to require user input
 * Delete journal entries beyond game state when loading game
-* Clean up text display
 * Make save game representation human-readable
 * Implement a proper state machine & command / action pattern for game logic
 
