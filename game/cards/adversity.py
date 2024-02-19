@@ -128,6 +128,7 @@ class Adversity(Card):
         target = self.get_threshold()
         success, deficiency = Adversity.check_target(target, modifiers)
         keep_trying = True
+        display_dict = super().take_actions(player, deck)
         while not success and keep_trying:
             user_selection = self.offer_retry(player, deficiency)
             match user_selection:
@@ -144,12 +145,25 @@ class Adversity(Card):
                     player.increase_doom()
                     corruption_marks.append(corruption)
                 case RetryActions.SACRIFICE:
-                    raise NotImplementedError("Sacrifice not implemented")
+                    possible_sacrifices = []
+                    for card in player.hand:
+                        if card.cardType == CardType.COMPANION:
+                            possible_sacrifices.append(card)
+                    sacrifices = multiselect_from_prompts(possible_sacrifices, "Select which companions to sacrifice.")
+                    total_bonus = 0
+                    for sacrifice in sacrifices:
+                        player.hand.remove(sacrifice)
+                        bonus = random.randint(1, 6)
+                        modifiers.append(bonus)
+                        display_dict["prompts"].append("* You sacrificed [[{}]] to gain a bonus of {} in a bid to overcome the trial.".format(sacrifice, bonus))
+                        total_bonus += bonus
+                    if total_bonus >= deficiency:
+                        success = True
                 case _:
                     raise ValueError("Should have hit one of the above cases")
         if success:
             player.increase_resolve()
-        display_dict = super().take_actions(player, deck)
+        
         display_dict["prompts"].extend(modifier_prompts)
         display_dict["prompts"].extend(influence_prompts)
         confounds = []
